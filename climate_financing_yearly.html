@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Climate financing yearly</title>
+  </head>
+  <body>
+    <div class="container">
+      <header class="d-flex flex-wrap justify-content-center py-3 mb-4 navbar navbar-light bg-light"><a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none ms-3" href="/"><span class="fs-4 navbar-brand">The Great Carbon Arbitrage</span></a>
+        <ul class="nav nav-text">
+          <li class="nav-item"><a class="nav-link active" href="index.html">Carbon Arbitrage</a></li>
+          <li class="nav-item">
+            <div class="dropdown"><a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="ClimateFinancingDropdown">Climate Financing</a>
+              <ul class="dropdown-menu" aria-labelledby="ClimateFinancingDropdown">
+                <li><a class="dropdown-item" href="climate_financing_map.html">Country</a></li>
+                <li><a class="dropdown-item" href="climate_financing.html">Regional</a></li>
+                <li><a class="dropdown-item" href="climate_financing_yearly.html">Annual</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item"><a class="nav-link active" href="#">Paper</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#">Code</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#">Blog</a></li>
+        </ul>
+      </header>
+    </div>
+    <script src="js/climate_financing_yearly.js" type="module"></script>
+    <div class="d-flex flex-row justify-content-center">
+      <!-- Output-->
+      <div class="ms-auto" id="timeseries" style="width:700px; margin:0 auto;"></div>
+      <!-- Input-->
+      <div class="d-flex flex-wrap justify-content-center py-3 mb-4" style="margin:0 auto">
+        <div class="flex-column">
+              <label class="form-label" for="phaseout-scenario">Coal phase out scenario</label>
+              <select class="form-select w-80" id="phaseout-scenario" onchange="calculate()">
+                <option selected>Net Zero 2050 (NGFS global scenario)</option>
+                <option>Halt to coal production</option>
+              </select>
+              <label class="form-label" for="coal-replacement">Coal replacement</label>
+              <select class="form-select w-80" id="coal-replacement" onchange="calculate()">
+                <option>100% solar, 0% wind</option>
+                <option>56% solar, 44% wind</option>
+                <option selected>50% solar, 50% wind</option>
+                <option>0% solar, 100% wind</option>
+              </select>
+              <label class="form-label" for="lifetime-renewable-plants">Investment costs - lifetime renewable plants</label>
+              <select class="form-select w-80" id="lifetime-renewable-plants" onchange="calculate()">
+                <option selected>30 years</option>
+                <option>50 years</option>
+              </select>
+              <label class="form-label" for="learning-curve">Investment costs fall - learning curve</label>
+              <select class="form-select w-80" id="learning-curve" onchange="calculate()">
+                <option selected>Learning (investment cost drop because of learning)</option>
+                <option>No learning (no investment cost drop)</option>
+              </select>
+          <label class="form-label" for="by-region"></label>
+          <select class="form-select w-80" id="by-region" onchange="calculate()">
+            <optgroup label="Level of development">
+              <option selected>World</option>
+              <option>Developed Countries</option>
+              <option>Developing Countries</option>
+              <option>Emerging Market Countries</option>
+            </optgroup>
+            <optgroup label="Region">
+              <option>Asia</option>
+              <option>Africa</option>
+              <option>North America</option>
+              <option>Latin America &amp; the Carribean</option>
+              <option>Europe</option>
+              <option>Australia &amp; New Zealand</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script type="module">
+      import {calculate} from "./js/climate_financing_yearly.js"
+      window.calculate = calculate
+      calculate()
+    </script>
+  </body>
+</html>

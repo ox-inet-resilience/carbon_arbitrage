@@ -1,0 +1,40 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous")
+    title Climate financing yearly
+  body
+    include includes/header.pug
+
+    script(src="js/climate_financing_yearly.js" type="module")
+
+    include includes/mixins.pug
+
+    div.d-flex.flex-row.justify-content-center
+      // Output
+      div#timeseries(style="width:700px; margin:0 auto;").ms-auto
+      // Input
+      div(class="d-flex flex-wrap justify-content-center py-3 mb-4", style="margin:0 auto")
+        .flex-column
+          include includes/common_user_inputs.pug
+
+          label(for="by-region").form-label= Region
+          select(id="by-region", onchange="calculate()").form-select.w-80
+            optgroup(label="Level of development")
+              - var vals = ["World", "Developed Countries", "Developing Countries", "Emerging Market Countries"]
+              each val in vals
+                - var isSelected = "World" == val
+                option(selected= isSelected)= val
+            optgroup(label="Region")
+              - var vals = ["Asia", "Africa", "North America", "Latin America & the Carribean", "Europe", "Australia & New Zealand"]
+              each val in vals
+                option(selected= false)= val
+
+    script(src="https://cdn.jsdelivr.net/npm/d3@7")
+    script(src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.4")
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous")
+    script(type="module").
+      import {calculate} from "./js/climate_financing_yearly.js"
+      window.calculate = calculate
+      calculate()
