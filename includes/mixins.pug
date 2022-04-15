@@ -12,3 +12,11 @@ mixin inputSelect(id, label, selected, vals)
     each val in vals
       - var isSelected = selected == val
       option(selected= isSelected)= val
+
+mixin discountRate
+  +inputSelect(
+    "discount-rate",
+    "Discount rate ρ",
+    "2.8% (WACC)",
+    ["2.8% (WACC)", "3.6% (WACC, average risk-premium 100 years)", "5%", "8%"]
+  )

@@ -49,13 +49,7 @@ html(lang="en")
 
         include includes/common_user_inputs.pug
 
-        +inputSelect(
-          "discount-rate",
-          "Discount rate ρ",
-          "2.8% (WACC)",
-          ["2.8% (WACC)", "3.6% (WACC, average risk-premium 100 years)", "5%", "8%"]
-        )
-
+        +discountRate
 
     script(src="https://d3js.org/d3.v7.min.js")
     script(src="https://d3js.org/topojson.v3.min.js")
