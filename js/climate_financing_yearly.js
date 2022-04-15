@@ -44,8 +44,12 @@ const calculatePlotData = (yearlyCostsDict, selectedRegion) => {
     yearlyCost = _get_yearly_cost(yearlyCostsDict)
   } else if (selectedRegion in nameTranslation) {
     yearlyCost = _get_yearly_cost(yearlyCostsDict, levelDevelopmentMap[nameTranslation[selectedRegion]])
-  } else {
+  } else if (selectedRegion in byRegionMap) {
     yearlyCost = _get_yearly_cost(yearlyCostsDict, byRegionMap[selectedRegion])
+  } else {
+    // This is for individual country
+    yearlyCost = _get_yearly_cost(yearlyCostsDict, [selectedRegion])
+    console.log(selectedRegion, yearlyCost)
   }
   const plotData = []
   for (const i in wholeYears) {

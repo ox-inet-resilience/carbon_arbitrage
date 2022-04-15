@@ -8,6 +8,7 @@ html(lang="en")
     include includes/header.pug
 
     script(src="js/climate_financing_yearly.js" type="module")
+    script(src="js/iso-3166-data.js")
 
     include includes/mixins.pug
 
@@ -29,7 +30,8 @@ html(lang="en")
             optgroup(label="Region")
               - var vals = ["Asia", "Africa", "North America", "Latin America & the Carribean", "Europe", "Australia & New Zealand"]
               each val in vals
-                option(selected= false)= val
+                option= val
+            optgroup(label="Country")#all-countries
 
     script(src="https://cdn.jsdelivr.net/npm/d3@7")
     script(src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.4")
@@ -38,3 +40,9 @@ html(lang="en")
       import {calculate} from "./js/climate_financing_yearly.js"
       window.calculate = calculate
       calculate()
+
+      // Insert all countries into the region selector dropdown
+      const allCountries = document.getElementById("all-countries")
+      for (const e of iso3166) {
+        allCountries.appendChild(new Option(e.name, e["alpha-2"]))
+      }

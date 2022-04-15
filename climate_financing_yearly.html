@@ -26,6 +26,7 @@
       </header>
     </div>
     <script src="js/climate_financing_yearly.js" type="module"></script>
+    <script src="js/iso-3166-data.js"></script>
     <div class="d-flex flex-row justify-content-center">
       <!-- Output-->
       <div class="ms-auto" id="timeseries" style="width:700px; margin:0 auto;"></div>
@@ -70,6 +71,7 @@
               <option>Europe</option>
               <option>Australia &amp; New Zealand</option>
             </optgroup>
+            <optgroup label="Country" id="all-countries"></optgroup>
           </select>
         </div>
       </div>
@@ -81,6 +83,12 @@
       import {calculate} from "./js/climate_financing_yearly.js"
       window.calculate = calculate
       calculate()
+      
+      // Insert all countries into the region selector dropdown
+      const allCountries = document.getElementById("all-countries")
+      for (const e of iso3166) {
+        allCountries.appendChild(new Option(e.name, e["alpha-2"]))
+      }
     </script>
   </body>
 </html>
