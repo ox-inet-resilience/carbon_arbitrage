@@ -103,9 +103,11 @@ export const calculate = () => {
     }
 
     //allCountries
+    const geoObj = topojson.feature(world, world.objects.countries)
     svg.append("g")
       .selectAll("path")
-      .data(topojson.feature(world, world.objects.countries).features)
+      // Filter out 010 (Antarctica)
+      .data(geoObj.features.filter(d => d.id !== "010"))
       .enter()
       .append("path")
       .attr("d", path)  // draw each country
