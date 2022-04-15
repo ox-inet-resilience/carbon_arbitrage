@@ -76,7 +76,7 @@ export function calculate() {
   const sortedX = ["World", "Developed Countries", "Developing Countries", "Emerging Market Countries", "Asia", "Africa", "North America", "Latin America & the Carribean", "Europe", "Australia & New Zealand"]
   const plot = Plot.plot({
     width: 700,
-    marginBottom: 100,
+    marginBottom: 130,
     x: {
       tickRotate: -45,
       domain: sortedX,
