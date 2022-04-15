@@ -93,7 +93,7 @@ export const calculate = () => {
       tooltip.transition()
         .duration(200)
         .style("opacity", .9)
-      tooltip.html(d.properties.name + "<br/>" + (d.cost ? d.cost.toFixed(2) + " billion USD" : "N/A"))
+      tooltip.html(d.properties.name + "<br/>" + (d.cost ? d.cost.toFixed(2) : 0.0 + " billion USD"))
         .style("left", (event.pageX) + "px")
         .style("top", (event.pageY - 28) + "px")
     }
