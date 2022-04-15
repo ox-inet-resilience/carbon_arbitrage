@@ -40,7 +40,7 @@ let costDict = calculateCostDict("Learning (investment cost drop because of lear
 
 
 const svg = d3.select("#map")
-const path = d3.geoPath().projection(d3.geoMercator())
+const path = d3.geoPath().projection(d3.geoMercator().scale(170).translate([600, 300]))
 const colorScale = d3.scaleThreshold()
   .domain(linspace(getMin(costDict), getMax(costDict), 6))
   .range(d3.schemeBlues[7])
