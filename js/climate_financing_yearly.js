@@ -55,7 +55,8 @@ const calculatePlotData = (yearlyCostsDict, selectedRegion) => {
   for (const i in wholeYears) {
     plotData.push({
       year: wholeYears[i],
-      cost: yearlyCost[i],
+      // Multiplication by 1e3 converts to billion dollars
+      cost: yearlyCost[i] * 1e3,
     })
   }
   return plotData
@@ -78,7 +79,7 @@ export function calculate() {
       label: "Time",
     },
     y: {
-      label: "Annual climate financing (trillion dollars)",
+      label: "Annual climate financing (billion dollars) — non-discounted",
     },
     marks: [
       Plot.line(plotData, {
