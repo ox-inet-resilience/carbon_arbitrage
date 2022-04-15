@@ -68,7 +68,7 @@ export function calculate() {
   const learningCurve = document.getElementById("learning-curve").value
   const discountRate = "2.8% (WACC)"
   const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, discountRate, phaseoutScenario].join("_")
-  const yearlyCostsDict = sensitivityAnalysisResult[key]
+  const yearlyCostsDict = sensitivityAnalysisResult[key + " NON-DISCOUNTED"]
 
   const selectedRegion = document.getElementById("by-region").value
 

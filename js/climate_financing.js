@@ -69,7 +69,7 @@ export function calculate() {
   const learningCurve = _get("learning-curve")
   const discountRate = _get("discount-rate")
   const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, discountRate, phaseoutScenario].join("_")
-  const yearlyCostsDict = sensitivityAnalysisResult[key]
+  const yearlyCostsDict = sensitivityAnalysisResult[key + " NON-DISCOUNTED"]
   const plotData = calculatePlotData(yearlyCostsDict)
 
   const labels = ["2024-2050", "2051-2070", "2071-2100"]

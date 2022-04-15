@@ -30,7 +30,7 @@ const getMin = obj => {
 }
 
 const calculateCostDict = (key) => {
-  const yearlyCostsDict = sensitivityAnalysisResult[key]
+  const yearlyCostsDict = sensitivityAnalysisResult[key + " NON-DISCOUNTED"]
   const costDict = {}
   for (const [key, value] of Object.entries(yearlyCostsDict)) {
     // Multiplication by 1e3 converts trillion dollars to billion dollars
