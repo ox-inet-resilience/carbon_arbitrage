@@ -66,8 +66,7 @@ export function calculate() {
   const coalReplacement = document.getElementById("coal-replacement").value
   const lifetime = document.getElementById("lifetime-renewable-plants").value
   const learningCurve = document.getElementById("learning-curve").value
-  const discountRate = "2.8% (WACC)"
-  const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, discountRate, phaseoutScenario].join("_")
+  const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, phaseoutScenario].join("_")
   const yearlyCostsDict = sensitivityAnalysisResult[key + " NON-DISCOUNTED"]
 
   const selectedRegion = document.getElementById("by-region").value

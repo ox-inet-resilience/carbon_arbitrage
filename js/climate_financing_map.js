@@ -3,8 +3,8 @@
 // This is the data
 import {sensitivityAnalysisResult} from "./website_sensitivity_climate_financing.js"
 import {gdpMarketcap2020} from "./all_countries_gdp_marketcap_2020_data.js"
+import {calculateDiscountedSum, discountRateMap, NGFS_PEG_YEAR} from "./common.js"
 
-const NGFS_PEG_YEAR = 2023
 const arbitragePeriod = 1 + (2100 - (NGFS_PEG_YEAR + 1))
 
 // Data taken from https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes/blob/master/slim-2/slim-2.json
@@ -29,19 +29,21 @@ const getMin = obj => {
   return obj[key]
 }
 
-const calculateCostDict = (key) => {
+const calculateCostDict = (key, discountRateText) => {
+  const discountRate = discountRateMap[discountRateText]
   const yearlyCostsDict = sensitivityAnalysisResult[key + " NON-DISCOUNTED"]
   const costDict = {}
+  const yearStart = NGFS_PEG_YEAR + 1
   for (const [key, value] of Object.entries(yearlyCostsDict)) {
     // Multiplication by 1e3 converts trillion dollars to billion dollars
-    const summed = value.reduce((a, b) => a + b, 0) * 1e3
+    const summed = calculateDiscountedSum(value.slice(yearStart - 2022), discountRate, yearStart) * 1e3
     costDict[key] = summed
   }
   return costDict
 }
 
 // Default value
-let costDict = calculateCostDict("Learning (investment cost drop because of learning)_30_50% solar, 50% wind_2.8% (WACC)_Net Zero 2050 (NGFS global scenario)")
+let costDict = calculateCostDict("Learning (investment cost drop because of learning)_30_50% solar, 50% wind_Net Zero 2050 (NGFS global scenario)", "2.8% (WACC)")
 
 
 const svg = d3.select("#map")
@@ -85,8 +87,8 @@ export const calculate = () => {
   const lifetime = _get("lifetime-renewable-plants")
   const learningCurve = _get("learning-curve")
   const discountRate = _get("discount-rate")
-  const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, discountRate, phaseoutScenario].join("_")
-  costDict = calculateCostDict(key)
+  const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, phaseoutScenario].join("_")
+  costDict = calculateCostDict(key, discountRate)
 
   const unit = _get("requisite-climate-financing-unit")
   const absoluteUnit = unit === "Billion dollars"
