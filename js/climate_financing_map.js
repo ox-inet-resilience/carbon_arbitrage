@@ -2,12 +2,17 @@
 
 // This is the data
 import {sensitivityAnalysisResult} from "./website_sensitivity_climate_financing.js"
+import {gdpMarketcap2020} from "./all_countries_gdp_marketcap_2020_data.js"
+
+const NGFS_PEG_YEAR = 2023
+const arbitragePeriod = 1 + (2100 - (NGFS_PEG_YEAR + 1))
 
 // Data taken from https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes/blob/master/slim-2/slim-2.json
 const isoNumber2Alpha2 = {}
 for (const el of iso3166) {
   isoNumber2Alpha2[el["country-code"]] = el["alpha-2"]
 }
+
 const linspace = (start, stop, num, endpoint = true) => {
     const div = endpoint ? (num - 1) : num
     const step = (stop - start) / div
@@ -45,12 +50,32 @@ const colorScale = d3.scaleThreshold()
   .domain(linspace(getMin(costDict), getMax(costDict), 6))
   .range(d3.schemeBlues[7])
 
-const getCost = (isoNumber) => {
-  const alpha2 = isoNumber2Alpha2[isoNumber] || null
+const getCost = (alpha2) => {
   if (!alpha2) {
     return 0.0
   }
   return costDict[alpha2] || null
+}
+
+const fillCost = absoluteUnit => (d) => {
+  const alpha2 = isoNumber2Alpha2[d.id] || null
+  let cost = getCost(alpha2)
+  let unit
+  if (absoluteUnit) {
+    unit = " billion USD"
+  } else {
+    unit = " %"
+    // Division by 1e9 converts to billion
+    const denominator = gdpMarketcap2020[alpha2] / 1e9 * arbitragePeriod
+    cost = denominator ? cost / denominator * 100 : "N/A"
+  }
+  if (cost === "N/A")
+    d.costText = "No GDP data"
+  else {
+    d.costText = (cost ? cost.toFixed(2) : 0.0) + unit
+  }
+
+  return colorScale(cost || 0.0)
 }
 
 export const calculate = () => {
@@ -62,25 +87,19 @@ export const calculate = () => {
   const discountRate = _get("discount-rate")
   const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, discountRate, phaseoutScenario].join("_")
   costDict = calculateCostDict(key)
+
+  const unit = _get("requisite-climate-financing-unit")
+  const absoluteUnit = unit === "Billion dollars"
   // Recompute color
   svg.selectAll("path")
     .join("path")
-    .attr("fill", (d) => {
-      d.cost = getCost(d.id)
-      return colorScale(d.cost || 0.0)
-    })
+    .attr("fill", fillCost(absoluteUnit))
 }
 
 ;(async () => {
   try {
     // Data taken from https://github.com/topojson/world-atlas
     const world = await d3.json("public/countries-110m.json")
-
-    // Unit input
-    const unitInput = document.getElementById("requisite-climate-financing-unit")
-    unitInput.onchange = () => {
-      const val = unitInput.value
-    }
 
     // Name hover
     const tooltip = d3
@@ -93,7 +112,8 @@ export const calculate = () => {
       tooltip.transition()
         .duration(200)
         .style("opacity", .9)
-      tooltip.html(d.properties.name + "<br/>" + (d.cost ? d.cost.toFixed(2) : 0.0 + " billion USD"))
+      const hoverText = d.properties.name + "<br/>" + d.costText
+      tooltip.html(hoverText)
         .style("left", (event.pageX) + "px")
         .style("top", (event.pageY - 28) + "px")
     }
@@ -112,10 +132,7 @@ export const calculate = () => {
       .append("path")
       .attr("d", path)  // draw each country
       // set the color of each country
-      .attr("fill", (d) => {
-        d.cost = getCost(d.id)
-        return colorScale(d.cost || 0.0)
-      })
+      .attr("fill", fillCost(true))
       .style("opacity", .8)
       .style("stroke", "#d9edf7")
       .attr("class", "country")
