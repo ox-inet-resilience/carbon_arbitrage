@@ -1,5 +1,6 @@
 import {levelDevelopmentMap, byRegionMap} from "./countries_grouping.js"
 import {calculateGdpByRegionMap} from "./common.js"
+import {gdpMarketcap2020} from "./all_countries_gdp_marketcap_2020_data.js"
 // This is the data
 import {sensitivityAnalysisResult} from "./website_sensitivity_climate_financing.js"
 
@@ -58,7 +59,7 @@ const calculatePlotData = (yearlyCostsDict, selectedRegion, absoluteUnit) => {
     // This is for individual country
     yearlyCost = _get_yearly_cost(yearlyCostsDict, [selectedRegion])
     if (!absoluteUnit) {
-      multiplier = 100 / (gdpMap[selectedRegion] / 1e9)
+      multiplier = 100 / (gdpMarketcap2020[selectedRegion] / 1e9)
     }
   }
   const plotData = []
@@ -87,7 +88,7 @@ export function calculate() {
   const absoluteUnit = unit === "Billion dollars"
 
   const plotData = calculatePlotData(yearlyCostsDict, selectedRegion, absoluteUnit)
-  const ylabel = absoluteUnit ? "Annual climate financing (billion dollars) — non-discounted" : "Annual climate financing / GDP of time period — non-discounted"
+  const ylabel = absoluteUnit ? "Annual climate financing (billion dollars) — non-discounted" : "Annual climate financing / GDP (%) — non-discounted"
   const plot = Plot.plot({
     width: 700,
     x: {
