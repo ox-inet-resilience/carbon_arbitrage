@@ -33,17 +33,11 @@ const _get_yearly_cost = (yearlyCostsDict, shortnames = null) => {
 }
 
 const calculatePlotData = (yearlyCostsDict, selectedRegion) => {
-  const nameTranslation = {
-    "Developed Countries": "Developed world",
-    "Developing Countries": "Developing world",
-    "Emerging Market Countries": "Emerging markets",
-  }
-
   let yearlyCost
   if (selectedRegion == "World") {
     yearlyCost = _get_yearly_cost(yearlyCostsDict)
-  } else if (selectedRegion in nameTranslation) {
-    yearlyCost = _get_yearly_cost(yearlyCostsDict, levelDevelopmentMap[nameTranslation[selectedRegion]])
+  } else if (selectedRegion in levelDevelopmentMap) {
+    yearlyCost = _get_yearly_cost(yearlyCostsDict, levelDevelopmentMap[selectedRegion])
   } else if (selectedRegion in byRegionMap) {
     yearlyCost = _get_yearly_cost(yearlyCostsDict, byRegionMap[selectedRegion])
   } else {

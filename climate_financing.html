@@ -32,6 +32,11 @@
       <!-- Input-->
       <div class="d-flex flex-wrap justify-content-center py-3 mb-4" style="margin:0 auto">
         <div class="flex-column">
+                  <label class="form-label" for="requisite-climate-financing-unit">Unit</label>
+                  <select class="form-select w-80" id="requisite-climate-financing-unit" onchange="calculate()">
+                    <option selected>Trillion dollars</option>
+                    <option>% of GDP</option>
+                  </select>
               <label class="form-label" for="phaseout-scenario">Coal phase out scenario</label>
               <select class="form-select w-80" id="phaseout-scenario" onchange="calculate()">
                 <option selected>Net Zero 2050 (NGFS global scenario)</option>

@@ -20,3 +20,11 @@ mixin discountRate
     "2.8% (WACC)",
     ["2.8% (WACC)", "3.6% (WACC, average risk-premium 100 years)", "5%", "8%"]
   )
+
+mixin cfUnit(dollarUnit)
+  +inputSelect(
+    "requisite-climate-financing-unit",
+    "Unit",
+    dollarUnit,
+    [dollarUnit, "% of GDP"]
+  )

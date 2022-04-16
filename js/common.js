@@ -1,3 +1,6 @@
+import {gdpMarketcap2020} from "./all_countries_gdp_marketcap_2020_data.js"
+import {levelDevelopmentMap, byRegionMap} from "./countries_grouping.js"
+
 export const NGFS_PEG_YEAR = 2023
 
 export const sum = (arr) => {
@@ -40,4 +43,27 @@ export const discountRateMap = {
   "3.6% (WACC, average risk-premium 100 years)": 0.036227985389412014,
   "5%": 0.05,
   "8%": 0.08,
+}
+
+export const calculateGdpByRegionMap = () => {
+  const getGdpSum = (countries) => {
+    let gdpSum = 0.0
+    for (const country of countries) {
+      gdpSum += gdpMarketcap2020[country] || 0.0
+    }
+    return gdpSum
+  }
+  const gdpMap = {}
+  let worldGdp = 0.0
+  for (const [k, v] of Object.entries(levelDevelopmentMap)) {
+    const gdpSum = getGdpSum(v)
+    gdpMap[k] = gdpSum
+    worldGdp += getGdpSum(v)
+  }
+  gdpMap["World"] = worldGdp
+
+  for (const [k, v] of Object.entries(byRegionMap)) {
+    gdpMap[k] = getGdpSum(v)
+  }
+  return gdpMap
 }

@@ -40,12 +40,7 @@ html(lang="en")
     div(style="margin:0 auto").d-flex.flex-wrap.justify-content-center
       .flex-column
         // Input
-        +inputSelect(
-          "requisite-climate-financing-unit",
-          "Present value of climate financing",
-          "Billion dollars",
-          ["Billion dollars", "% of country GDP over [2024, Time Horizon]"]
-        )
+        +cfUnit("Billion dollars")
 
         include includes/common_user_inputs.pug
 
