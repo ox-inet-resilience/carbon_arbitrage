@@ -1,6 +1,9 @@
 import {levelDevelopmentMap, byRegionMap} from "./countries_grouping.js"
+import {calculateGdpByRegionMap} from "./common.js"
 // This is the data
 import {sensitivityAnalysisResult} from "./website_sensitivity_climate_financing.js"
+
+const gdpMap = calculateGdpByRegionMap()
 
 // Equivalent to Python's range(2022, 2100 + 1)
 const wholeYears = Array.from(new Array(79), (x, i) => 2022 + i)
@@ -32,48 +35,66 @@ const _get_yearly_cost = (yearlyCostsDict, shortnames = null) => {
   return out
 }
 
-const calculatePlotData = (yearlyCostsDict, selectedRegion) => {
+const calculatePlotData = (yearlyCostsDict, selectedRegion, absoluteUnit) => {
   let yearlyCost
+  let multiplier = 1
   if (selectedRegion == "World") {
     yearlyCost = _get_yearly_cost(yearlyCostsDict)
+    if (!absoluteUnit) {
+      // Division by 1e9 converts from dollars to billion dollars
+      multiplier = 100 / (gdpMap["World"] / 1e9)
+    }
   } else if (selectedRegion in levelDevelopmentMap) {
     yearlyCost = _get_yearly_cost(yearlyCostsDict, levelDevelopmentMap[selectedRegion])
+    if (!absoluteUnit) {
+      multiplier = 100 / (gdpMap[selectedRegion] / 1e9)
+    }
   } else if (selectedRegion in byRegionMap) {
     yearlyCost = _get_yearly_cost(yearlyCostsDict, byRegionMap[selectedRegion])
+    if (!absoluteUnit) {
+      multiplier = 100 / (gdpMap[selectedRegion] / 1e9)
+    }
   } else {
     // This is for individual country
     yearlyCost = _get_yearly_cost(yearlyCostsDict, [selectedRegion])
-    console.log(selectedRegion, yearlyCost)
+    if (!absoluteUnit) {
+      multiplier = 100 / (gdpMap[selectedRegion] / 1e9)
+    }
   }
   const plotData = []
   for (const i in wholeYears) {
     plotData.push({
       year: wholeYears[i],
       // Multiplication by 1e3 converts to billion dollars
-      cost: yearlyCost[i] * 1e3,
+      cost: multiplier ? yearlyCost[i] * 1e3 * multiplier : 0.0,
     })
   }
   return plotData
 }
 
 export function calculate() {
-  const phaseoutScenario = document.getElementById("phaseout-scenario").value
-  const coalReplacement = document.getElementById("coal-replacement").value
-  const lifetime = document.getElementById("lifetime-renewable-plants").value
-  const learningCurve = document.getElementById("learning-curve").value
+  const _get = (id) => document.getElementById(id).value
+  const phaseoutScenario = _get("phaseout-scenario")
+  const coalReplacement = _get("coal-replacement")
+  const lifetime = _get("lifetime-renewable-plants")
+  const learningCurve = _get("learning-curve")
   const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, phaseoutScenario].join("_")
   const yearlyCostsDict = sensitivityAnalysisResult[key + " NON-DISCOUNTED"]
 
-  const selectedRegion = document.getElementById("by-region").value
+  const selectedRegion = _get("by-region")
 
-  const plotData = calculatePlotData(yearlyCostsDict, selectedRegion)
+  const unit = _get("requisite-climate-financing-unit")
+  const absoluteUnit = unit === "Billion dollars"
+
+  const plotData = calculatePlotData(yearlyCostsDict, selectedRegion, absoluteUnit)
+  const ylabel = absoluteUnit ? "Annual climate financing (billion dollars) — non-discounted" : "Annual climate financing / GDP of time period — non-discounted"
   const plot = Plot.plot({
     width: 700,
     x: {
       label: "Time",
     },
     y: {
-      label: "Annual climate financing (billion dollars) — non-discounted",
+      label: ylabel,
     },
     marks: [
       Plot.line(plotData, {

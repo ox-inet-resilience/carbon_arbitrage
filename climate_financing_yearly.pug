@@ -18,6 +18,8 @@ html(lang="en")
       // Input
       div(class="d-flex flex-wrap justify-content-center py-3 mb-4", style="margin:0 auto")
         .flex-column
+          +cfUnit("Billion dollars")
+
           include includes/common_user_inputs.pug
 
           label(for="by-region").form-label= Region
