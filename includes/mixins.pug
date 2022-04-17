@@ -1,11 +1,3 @@
-mixin cfUnit(dollarUnit)
-  +inputSelect(
-    "requisite-climate-financing-unit",
-    "Unit",
-    dollarUnit,
-    [dollarUnit, "% of GDP"]
-  )
-
 mixin infoCircle
   svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16")
     path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
@@ -44,3 +36,18 @@ mixin discountRate
     ["2.8% (WACC)", "3.6% (WACC, average risk-premium 100 years)", "5%", "8%"],
     "To obtain the present value of costs of phasing out coal we discount costs over [t+2,T] with the weighted average costs of capital (WACC)."
   )
+
+mixin cfUnitCommon(dollarUnit, info)
+  +inputSelect(
+    "requisite-climate-financing-unit",
+    "Unit",
+    dollarUnit,
+    [dollarUnit, "% of GDP"],
+    info
+  )
+
+mixin cfUnit(dollarUnit)
+  +cfUnitCommon(dollarUnit, "Present value of climate financing needs, given by the present value of costs of phasing out coal (i.e., opportunity costs of coal and investments costs in replacement energy). This is expressed either in " + dollarUnit + " or as a percentage of GDP over [t+2,T].")
+
+mixin cfUnitAnnual(dollarUnit)
+  +cfUnitCommon(dollarUnit, "Annual climate financing needs, given by the annual costs of phasing out coal (i.e., annual opportunity costs of coal and investments costs in replacement energy). The non-discounted annual costs are expressed either in " + dollarUnit + " or as a percentage of annual GDP.")
