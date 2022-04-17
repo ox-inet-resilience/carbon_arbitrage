@@ -24,7 +24,7 @@ mixin inputSelect(id, label, selected, vals, info=false)
     = label
     if info
       +moreInfo(info)
-  select(id=id, onchange="calculate()").form-select.w-80
+  select(id=id, onchange="calculate()").form-select.w-80.mb-2
     each val in vals
       - var isSelected = selected == val
       option(selected= isSelected)= val
