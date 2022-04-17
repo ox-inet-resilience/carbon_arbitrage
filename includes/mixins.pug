@@ -1,13 +1,36 @@
-mixin slider(id, label, min, max, step, value)
+mixin cfUnit(dollarUnit)
+  +inputSelect(
+    "requisite-climate-financing-unit",
+    "Unit",
+    dollarUnit,
+    [dollarUnit, "% of GDP"]
+  )
+
+mixin infoCircle
+  svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16")
+    path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
+    path(d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z")
+
+mixin moreInfo(title)
+  span(data-bs-toggle="tooltip" data-bs-placement="top" title=title).text-success
+    +infoCircle
+
+mixin slider(id, label, min, max, step, value, info=false)
   div.flex-row
-    label(for=id).form-label= label
+    label(for=id).form-label
+      = label
+      if info
+        +moreInfo(info)
     // https://stackoverflow.com/questions/10004723/html5-input-type-range-show-range-value
     input(id=id type="range" min=min max=max step=step value=value oninput="this.nextElementSibling.value = this.value; calculate()").form-range.w-80
     |&nbsp;
     output= value
 
-mixin inputSelect(id, label, selected, vals)
-  label(for=id).form-label= label
+mixin inputSelect(id, label, selected, vals, info=false)
+  label(for=id).form-label
+    = label
+    if info
+      +moreInfo(info)
   select(id=id, onchange="calculate()").form-select.w-80
     each val in vals
       - var isSelected = selected == val
@@ -18,13 +41,6 @@ mixin discountRate
     "discount-rate",
     "Discount rate ρ",
     "2.8% (WACC)",
-    ["2.8% (WACC)", "3.6% (WACC, average risk-premium 100 years)", "5%", "8%"]
-  )
-
-mixin cfUnit(dollarUnit)
-  +inputSelect(
-    "requisite-climate-financing-unit",
-    "Unit",
-    dollarUnit,
-    [dollarUnit, "% of GDP"]
+    ["2.8% (WACC)", "3.6% (WACC, average risk-premium 100 years)", "5%", "8%"],
+    "To obtain the present value of costs of phasing out coal we discount costs over [t+2,T] with the weighted average costs of capital (WACC)."
   )

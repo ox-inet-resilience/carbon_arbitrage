@@ -21,7 +21,9 @@ html(lang="en")
             td
               output#pv-benefits 87.05
           tr
-            td Present value of costs of phasing out coal (in trillion dollars)
+            td
+              |Present value of costs of phasing out coal (in trillion dollars)
+              +moreInfo("Consists of the opportunity costs of coal and investment costs in replacement (renewable) energy.")
             td
               output#pv-costs 29.03
           tr
@@ -37,11 +39,15 @@ html(lang="en")
             td
               output#investment-costs 28.98
           tr.table-success
-            td Carbon arbitrage (in trillion dollars)
+            td
+              |Carbon arbitrage (in trillion dollars)
+              +moreInfo("Difference between present value of benefits and costs of phasing out coal.")
             td
               output#carbon-arbitrage 77.89
           tr.table-success
-            td Carbon arbitrage relative to world GDP
+            td
+              |Carbon arbitrage relative to world GDP
+              +moreInfo("Carbon arbitrage relative to GDP every year from t+2 until time T, where t+2=2024 and T=time horizon of carbon arbitrage.")
             td
               output#carbon-arbitrage-relative-gdp 1.2 %
           tr.table-success
@@ -80,13 +86,14 @@ html(lang="en")
       // Input
       div(class="d-flex flex-wrap justify-content-center py-3 mb-4", style="margin:0 auto")
         .flex-column
-          +slider("social-cost-of-carbon", "Social cost of carbon", 25, 400, 25, 75)
+          +slider("social-cost-of-carbon", "Social cost of carbon", 25, 400, 25, 75, "The social cost of carbon is an estimate of the economic costs, or damages, of emitting one additional ton of carbon dioxide into the atmosphere, and thus the benefits of reducing emissions.")
 
           +inputSelect(
             "time-horizon",
             "Time horizon of carbon arbitrage",
             "2100",
-            ["2050", "2070", "2100"]
+            ["2050", "2070", "2100"],
+            "The last year in which costs are made to phase out coal."
           )
 
           include includes/common_user_inputs.pug
@@ -94,4 +101,6 @@ html(lang="en")
           +discountRate
 
     script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous")
+    // Needed to enable Bootstrap tooltips
+    script(src="js/enable_tooltips.js")
   </body>
