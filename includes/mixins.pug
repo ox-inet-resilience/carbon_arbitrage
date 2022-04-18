@@ -38,6 +38,15 @@ mixin discountRate
     "The discount rate is used to obtain the present value of costs of phasing out coal over [t+2, T]. WACC stands for the weighted average costs of capital."
   )
 
+mixin timeHorizon
+  +inputSelect(
+    "time-horizon",
+    "Time horizon of carbon arbitrage",
+    "2100",
+    ["2050", "2070", "2100"],
+    "The last year in which costs are made to phase out coal."
+  )
+
 mixin cfUnitCommon(dollarUnit, info)
   +inputSelect(
     "requisite-climate-financing-unit",

@@ -89,13 +89,7 @@ html(lang="en")
         .flex-column
           +slider("social-cost-of-carbon", "Social cost of carbon (in dollars)", 25, 400, 25, 75, "The social cost of carbon is an estimate of the economic costs, or damages, of emitting one additional ton of carbon dioxide into the atmosphere, and thus the benefits of reducing emissions.")
 
-          +inputSelect(
-            "time-horizon",
-            "Time horizon of carbon arbitrage",
-            "2100",
-            ["2050", "2070", "2100"],
-            "The last year in which costs are made to phase out coal."
-          )
+          +timeHorizon
 
           include includes/common_user_inputs.pug
 

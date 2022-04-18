@@ -5,7 +5,8 @@ import {sensitivityAnalysisResult} from "./website_sensitivity_climate_financing
 import {gdpMarketcap2020} from "./all_countries_gdp_marketcap_2020_data.js"
 import {calculateDiscountedSum, discountRateMap, NGFS_PEG_YEAR} from "./common.js"
 
-const arbitragePeriod = 1 + (2100 - (NGFS_PEG_YEAR + 1))
+const arbitragePeriod = yearEnd => 1 + (yearEnd - (NGFS_PEG_YEAR + 1))
+const yearEndDefaultValue = 2100
 
 // Data taken from https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes/blob/master/slim-2/slim-2.json
 const isoNumber2Alpha2 = {}
@@ -29,21 +30,21 @@ const getMin = obj => {
   return obj[key]
 }
 
-const calculateCostDict = (key, discountRateText) => {
+const calculateCostDict = (key, discountRateText, yearEnd) => {
   const discountRate = discountRateMap[discountRateText]
   const yearlyCostsDict = sensitivityAnalysisResult[key + " NON-DISCOUNTED"]
   const costDict = {}
   const yearStart = NGFS_PEG_YEAR + 1
   for (const [key, value] of Object.entries(yearlyCostsDict)) {
     // Multiplication by 1e3 converts trillion dollars to billion dollars
-    const summed = calculateDiscountedSum(value.slice(yearStart - 2022), discountRate, yearStart) * 1e3
+    const summed = calculateDiscountedSum(value.slice(yearStart - 2022, yearEnd - 2022 + 1), discountRate, yearStart) * 1e3
     costDict[key] = summed
   }
   return costDict
 }
 
 // Default value
-let costDict = calculateCostDict("Learning (investment cost drop because of learning)_30_50% solar, 50% wind_Net Zero 2050 (NGFS global scenario)", "2.8% (WACC)")
+let costDict = calculateCostDict("Learning (investment cost drop because of learning)_30_50% solar, 50% wind_Net Zero 2050 (NGFS global scenario)", "2.8% (WACC)", yearEndDefaultValue)
 
 
 const svg = d3.select("#map")
@@ -59,7 +60,7 @@ const getCost = (alpha2) => {
   return costDict[alpha2] || null
 }
 
-const fillCost = absoluteUnit => (d) => {
+const fillCost = (absoluteUnit, yearEnd = yearEndDefaultValue) => (d) => {
   const alpha2 = isoNumber2Alpha2[d.id] || null
   let cost = getCost(alpha2)
   let unit
@@ -68,7 +69,7 @@ const fillCost = absoluteUnit => (d) => {
   } else {
     unit = " %"
     // Division by 1e9 converts to billion
-    const denominator = gdpMarketcap2020[alpha2] / 1e9 * arbitragePeriod
+    const denominator = gdpMarketcap2020[alpha2] / 1e9 * arbitragePeriod(yearEnd)
     cost = denominator ? cost / denominator * 100 : "N/A"
   }
   if (cost === "N/A")
@@ -87,15 +88,17 @@ export const calculate = () => {
   const lifetime = _get("lifetime-renewable-plants")
   const learningCurve = _get("learning-curve")
   const discountRate = _get("discount-rate")
+  const yearEnd = parseInt(_get("time-horizon"))
   const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, phaseoutScenario].join("_")
-  costDict = calculateCostDict(key, discountRate)
+  costDict = calculateCostDict(key, discountRate, yearEnd)
 
   const unit = _get("requisite-climate-financing-unit")
   const absoluteUnit = unit === "Billion dollars"
+
   // Recompute color
   svg.selectAll("path")
     .join("path")
-    .attr("fill", fillCost(absoluteUnit))
+    .attr("fill", fillCost(absoluteUnit, yearEnd))
 }
 
 ;(async () => {
