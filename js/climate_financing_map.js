@@ -43,15 +43,17 @@ const calculateCostDict = (key, discountRateText, yearEnd) => {
   return costDict
 }
 
+const calculateColorScale = (_costDict) => d3.scaleThreshold()
+  .domain(linspace(getMin(_costDict), getMax(_costDict), 6))
+  .range(d3.schemeBlues[7])
+
 // Default value
 let costDict = calculateCostDict("Learning (investment cost drop because of learning)_30_50% solar, 50% wind_Net Zero 2050 (NGFS global scenario)", "2.8% (WACC)", yearEndDefaultValue)
+let colorScale = calculateColorScale(costDict)
 
 
 const svg = d3.select("#map")
 const path = d3.geoPath().projection(d3.geoMercator().scale(170).translate([600, 300]))
-const colorScale = d3.scaleThreshold()
-  .domain(linspace(getMin(costDict), getMax(costDict), 6))
-  .range(d3.schemeBlues[7])
 
 const getCost = (alpha2) => {
   if (!alpha2) {
@@ -91,6 +93,7 @@ export const calculate = () => {
   const yearEnd = parseInt(_get("time-horizon"))
   const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, phaseoutScenario].join("_")
   costDict = calculateCostDict(key, discountRate, yearEnd)
+  colorScale = calculateColorScale(costDict)
 
   const unit = _get("requisite-climate-financing-unit")
   const absoluteUnit = unit === "Billion dollars"
