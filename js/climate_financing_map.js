@@ -4,6 +4,7 @@
 import {sensitivityAnalysisResult} from "./website_sensitivity_climate_financing.js"
 import {gdpMarketcap2020} from "./all_countries_gdp_marketcap_2020_data.js"
 import {calculateDiscountedSum, discountRateMap, NGFS_PEG_YEAR} from "./common.js"
+import {Legend} from "./d3-color-legend.js"
 
 const arbitragePeriod = yearEnd => 1 + (yearEnd - (NGFS_PEG_YEAR + 1))
 const yearEndDefaultValue = 2100
@@ -47,10 +48,21 @@ const calculateColorScale = (_costDict) => d3.scaleThreshold()
   .domain(linspace(getMin(_costDict), getMax(_costDict), 6))
   .range(d3.schemeBlues[7])
 
+const setLegend = (_colorScale, absoluteUnit) => {
+  const legendContainer = document.getElementById("legend")
+  if (legendContainer.firstChild) {
+    legendContainer.removeChild(legendContainer.firstChild)
+  }
+  const legend = Legend(
+    _colorScale,
+    {tickFormat: ".0f", title: absoluteUnit ? "Billion dollars" : "% of GDP"})
+  legendContainer.appendChild(legend)
+}
+
 // Default value
 let costDict = calculateCostDict("Learning (investment cost drop because of learning)_30_50% solar, 50% wind_Net Zero 2050 (NGFS global scenario)", "2.8% (WACC)", yearEndDefaultValue)
 let colorScale = calculateColorScale(costDict)
-
+setLegend(colorScale, true)
 
 const svg = d3.select("#map")
 const path = d3.geoPath().projection(d3.geoMercator().scale(170).translate([600, 300]))
@@ -97,6 +109,8 @@ export const calculate = () => {
 
   const unit = _get("requisite-climate-financing-unit")
   const absoluteUnit = unit === "Billion dollars"
+
+  setLegend(colorScale, absoluteUnit)
 
   // Recompute color
   svg.selectAll("path")
