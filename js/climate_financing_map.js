@@ -31,14 +31,19 @@ const getMin = obj => {
   return obj[key]
 }
 
-const calculateCostDict = (key, discountRateText, yearEnd) => {
+const calculateCostDict = (key, discountRateText, yearEnd, absoluteUnit) => {
   const discountRate = discountRateMap[discountRateText]
   const yearlyCostsDict = sensitivityAnalysisResult[key + " NON-DISCOUNTED"]
   const costDict = {}
   const yearStart = NGFS_PEG_YEAR + 1
   for (const [key, value] of Object.entries(yearlyCostsDict)) {
     // Multiplication by 1e3 converts trillion dollars to billion dollars
-    const summed = calculateDiscountedSum(value.slice(yearStart - 2022, yearEnd - 2022 + 1), discountRate, yearStart) * 1e3
+    let summed = calculateDiscountedSum(value.slice(yearStart - 2022, yearEnd - 2022 + 1), discountRate, yearStart) * 1e3
+    if (!absoluteUnit) {
+      // Division by 1e9 converts to billion
+      const denominator = gdpMarketcap2020[key] / 1e9 * arbitragePeriod(yearEnd)
+      summed = denominator ? summed / denominator * 100 : "N/A"
+    }
     costDict[key] = summed
   }
   return costDict
@@ -60,7 +65,7 @@ const setLegend = (_colorScale, absoluteUnit) => {
 }
 
 // Default value
-let costDict = calculateCostDict("Learning (investment cost drop because of learning)_30_50% solar, 50% wind_Net Zero 2050 (NGFS global scenario)", "2.8% (WACC)", yearEndDefaultValue)
+let costDict = calculateCostDict("Learning (investment cost drop because of learning)_30_50% solar, 50% wind_Net Zero 2050 (NGFS global scenario)", "2.8% (WACC)", yearEndDefaultValue, true)
 let colorScale = calculateColorScale(costDict)
 setLegend(colorScale, true)
 
@@ -74,17 +79,14 @@ const getCost = (alpha2) => {
   return costDict[alpha2] || null
 }
 
-const fillCost = (absoluteUnit, yearEnd = yearEndDefaultValue) => (d) => {
+const fillCost = (absoluteUnit) => (d) => {
   const alpha2 = isoNumber2Alpha2[d.id] || null
-  let cost = getCost(alpha2)
+  const cost = getCost(alpha2)
   let unit
   if (absoluteUnit) {
     unit = " billion USD"
   } else {
     unit = " %"
-    // Division by 1e9 converts to billion
-    const denominator = gdpMarketcap2020[alpha2] / 1e9 * arbitragePeriod(yearEnd)
-    cost = denominator ? cost / denominator * 100 : "N/A"
   }
   if (cost === "N/A")
     d.costText = "No GDP data"
@@ -104,18 +106,17 @@ export const calculate = () => {
   const discountRate = _get("discount-rate")
   const yearEnd = parseInt(_get("time-horizon"))
   const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, phaseoutScenario].join("_")
-  costDict = calculateCostDict(key, discountRate, yearEnd)
-  colorScale = calculateColorScale(costDict)
-
   const unit = _get("requisite-climate-financing-unit")
   const absoluteUnit = unit === "Billion dollars"
 
+  costDict = calculateCostDict(key, discountRate, yearEnd, absoluteUnit)
+  colorScale = calculateColorScale(costDict)
   setLegend(colorScale, absoluteUnit)
 
   // Recompute color
   svg.selectAll("path")
     .join("path")
-    .attr("fill", fillCost(absoluteUnit, yearEnd))
+    .attr("fill", fillCost(absoluteUnit))
 }
 
 ;(async () => {
