@@ -13,8 +13,6 @@ html(lang="en")
     include includes/mixins.pug
 
     div.d-flex.flex-row.justify-content-center
-      // Output
-      div#timeseries(style="width:700px; margin:0 auto;").ms-auto
       // Input
       div(class="d-flex flex-wrap justify-content-center py-3 mb-4", style="margin:0 auto")
         .flex-column
@@ -34,6 +32,8 @@ html(lang="en")
               each val in vals
                 option= val
             optgroup(label="Country")#all-countries
+      // Output
+      div#timeseries(style="width:700px; margin:0 auto;").ms-auto
 
     script(src="https://cdn.jsdelivr.net/npm/d3@7")
     script(src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.4")

@@ -28,6 +28,89 @@
     <script src="js/sensitivity_analysis_result.js"></script>
     <script src="js/carbon_arbitrage.js"></script>
     <div class="d-flex flex-row justify-content-center">
+      <!-- Input-->
+      <div class="d-flex flex-wrap justify-content-center py-3 mb-4" style="margin:0 auto">
+        <div class="flex-column">
+              <div class="flex-row">
+                <label class="form-label" for="social-cost-of-carbon">Social cost of carbon (in dollars)<span class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="The social cost of carbon is an estimate of the economic costs, or damages, of emitting one additional ton of carbon dioxide into the atmosphere, and thus the benefits of reducing emissions.">
+                            <!-- The vertical-align: -0.125em is necessary. See https://github.com/twbs/icons/issues/82-->
+                            <svg class="bi bi-info-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -0.125em">
+                              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                              <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
+                            </svg></span>
+                </label>
+                <!-- https://stackoverflow.com/questions/10004723/html5-input-type-range-show-range-value-->
+                <input class="form-range w-80" id="social-cost-of-carbon" type="range" min="25" max="400" step="25" value="75" oninput="this.nextElementSibling.value = this.value; calculate()">&nbsp;
+                <output>75</output>
+              </div>
+                  <label class="form-label" for="time-horizon">Time horizon of carbon arbitrage<span class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="The last year in which costs are made to phase out coal.">
+                              <!-- The vertical-align: -0.125em is necessary. See https://github.com/twbs/icons/issues/82-->
+                              <svg class="bi bi-info-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -0.125em">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
+                              </svg></span>
+                  </label>
+                  <select class="form-select w-80 mb-2" id="time-horizon" onchange="calculate()">
+                    <option>2050</option>
+                    <option>2070</option>
+                    <option selected>2100</option>
+                  </select>
+              <label class="form-label" for="phaseout-scenario">Coal phase out scenario<span class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="The pathway according to which coal is phased out. “Net Zero 2050 (NGFS global scenario)” uses a pathway developed by the Network for Greening the Financial System (NGFS) to phase out coal in line with the net zero 2050 ambitions. “Halt to coal production” represents a benchmark scenario where coal production would be halted completely from t+2 onwards, where t+2=2024.">
+                          <!-- The vertical-align: -0.125em is necessary. See https://github.com/twbs/icons/issues/82-->
+                          <svg class="bi bi-info-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -0.125em">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
+                          </svg></span>
+              </label>
+              <select class="form-select w-80 mb-2" id="phaseout-scenario" onchange="calculate()">
+                <option selected>Net Zero 2050 (NGFS global scenario)</option>
+                <option>Halt to coal production</option>
+              </select>
+              <label class="form-label" for="coal-replacement">Coal replacement<span class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="The mixture of replacement energy with which phased out coal is replaced.">
+                          <!-- The vertical-align: -0.125em is necessary. See https://github.com/twbs/icons/issues/82-->
+                          <svg class="bi bi-info-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -0.125em">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
+                          </svg></span>
+              </label>
+              <select class="form-select w-80 mb-2" id="coal-replacement" onchange="calculate()">
+                <option>100% solar, 0% wind</option>
+                <option>56% solar, 44% wind</option>
+                <option selected>50% solar, 50% wind</option>
+                <option>0% solar, 100% wind</option>
+              </select>
+              <label class="form-label" for="lifetime-renewable-plants">Investment costs - lifetime renewable plants
+              </label>
+              <select class="form-select w-80 mb-2" id="lifetime-renewable-plants" onchange="calculate()">
+                <option selected>30 years</option>
+                <option>50 years</option>
+              </select>
+              <label class="form-label" for="learning-curve">Investment costs fall - learning curve<span class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="The costs of renewables have fallen sharply over the last decades because of learning-by-doing. The drop-down “learning” means that we capture the drop in investment costs in renewables resulting from learning of earlier built renewables to replace coal. The drop-down “no learning” represents a benchmark where no learning-by-doing effects take place and future investment costs do not further fall.">
+                          <!-- The vertical-align: -0.125em is necessary. See https://github.com/twbs/icons/issues/82-->
+                          <svg class="bi bi-info-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -0.125em">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
+                          </svg></span>
+              </label>
+              <select class="form-select w-80 mb-2" id="learning-curve" onchange="calculate()">
+                <option selected>Learning (investment cost drop because of learning)</option>
+                <option>No learning (no investment cost drop)</option>
+              </select>
+                  <label class="form-label" for="discount-rate">Discount rate ρ<span class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="The discount rate is used to obtain the present value of costs of phasing out coal over [t+2, T]. WACC stands for the weighted average costs of capital.">
+                              <!-- The vertical-align: -0.125em is necessary. See https://github.com/twbs/icons/issues/82-->
+                              <svg class="bi bi-info-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -0.125em">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
+                              </svg></span>
+                  </label>
+                  <select class="form-select w-80 mb-2" id="discount-rate" onchange="calculate()">
+                    <option selected>2.8% (WACC)</option>
+                    <option>3.6% (WACC, average risk-premium 100 years)</option>
+                    <option>5%</option>
+                    <option>8%</option>
+                  </select>
+        </div>
+      </div>
       <!-- Output-->
       <div class="ms-auto" style="width:700px; margin:0 auto;">
         <table class="table table-hover">
@@ -131,89 +214,6 @@
           <!--  td-->
           <!--    output#debug-->
         </table>
-      </div>
-      <!-- Input-->
-      <div class="d-flex flex-wrap justify-content-center py-3 mb-4" style="margin:0 auto">
-        <div class="flex-column">
-              <div class="flex-row">
-                <label class="form-label" for="social-cost-of-carbon">Social cost of carbon (in dollars)<span class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="The social cost of carbon is an estimate of the economic costs, or damages, of emitting one additional ton of carbon dioxide into the atmosphere, and thus the benefits of reducing emissions.">
-                            <!-- The vertical-align: -0.125em is necessary. See https://github.com/twbs/icons/issues/82-->
-                            <svg class="bi bi-info-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -0.125em">
-                              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
-                              <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
-                            </svg></span>
-                </label>
-                <!-- https://stackoverflow.com/questions/10004723/html5-input-type-range-show-range-value-->
-                <input class="form-range w-80" id="social-cost-of-carbon" type="range" min="25" max="400" step="25" value="75" oninput="this.nextElementSibling.value = this.value; calculate()">&nbsp;
-                <output>75</output>
-              </div>
-                  <label class="form-label" for="time-horizon">Time horizon of carbon arbitrage<span class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="The last year in which costs are made to phase out coal.">
-                              <!-- The vertical-align: -0.125em is necessary. See https://github.com/twbs/icons/issues/82-->
-                              <svg class="bi bi-info-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -0.125em">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
-                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
-                              </svg></span>
-                  </label>
-                  <select class="form-select w-80 mb-2" id="time-horizon" onchange="calculate()">
-                    <option>2050</option>
-                    <option>2070</option>
-                    <option selected>2100</option>
-                  </select>
-              <label class="form-label" for="phaseout-scenario">Coal phase out scenario<span class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="The pathway according to which coal is phased out. “Net Zero 2050 (NGFS global scenario)” uses a pathway developed by the Network for Greening the Financial System (NGFS) to phase out coal in line with the net zero 2050 ambitions. “Halt to coal production” represents a benchmark scenario where coal production would be halted completely from t+2 onwards, where t+2=2024.">
-                          <!-- The vertical-align: -0.125em is necessary. See https://github.com/twbs/icons/issues/82-->
-                          <svg class="bi bi-info-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -0.125em">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
-                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
-                          </svg></span>
-              </label>
-              <select class="form-select w-80 mb-2" id="phaseout-scenario" onchange="calculate()">
-                <option selected>Net Zero 2050 (NGFS global scenario)</option>
-                <option>Halt to coal production</option>
-              </select>
-              <label class="form-label" for="coal-replacement">Coal replacement<span class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="The mixture of replacement energy with which phased out coal is replaced.">
-                          <!-- The vertical-align: -0.125em is necessary. See https://github.com/twbs/icons/issues/82-->
-                          <svg class="bi bi-info-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -0.125em">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
-                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
-                          </svg></span>
-              </label>
-              <select class="form-select w-80 mb-2" id="coal-replacement" onchange="calculate()">
-                <option>100% solar, 0% wind</option>
-                <option>56% solar, 44% wind</option>
-                <option selected>50% solar, 50% wind</option>
-                <option>0% solar, 100% wind</option>
-              </select>
-              <label class="form-label" for="lifetime-renewable-plants">Investment costs - lifetime renewable plants
-              </label>
-              <select class="form-select w-80 mb-2" id="lifetime-renewable-plants" onchange="calculate()">
-                <option selected>30 years</option>
-                <option>50 years</option>
-              </select>
-              <label class="form-label" for="learning-curve">Investment costs fall - learning curve<span class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="The costs of renewables have fallen sharply over the last decades because of learning-by-doing. The drop-down “learning” means that we capture the drop in investment costs in renewables resulting from learning of earlier built renewables to replace coal. The drop-down “no learning” represents a benchmark where no learning-by-doing effects take place and future investment costs do not further fall.">
-                          <!-- The vertical-align: -0.125em is necessary. See https://github.com/twbs/icons/issues/82-->
-                          <svg class="bi bi-info-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -0.125em">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
-                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
-                          </svg></span>
-              </label>
-              <select class="form-select w-80 mb-2" id="learning-curve" onchange="calculate()">
-                <option selected>Learning (investment cost drop because of learning)</option>
-                <option>No learning (no investment cost drop)</option>
-              </select>
-                  <label class="form-label" for="discount-rate">Discount rate ρ<span class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="The discount rate is used to obtain the present value of costs of phasing out coal over [t+2, T]. WACC stands for the weighted average costs of capital.">
-                              <!-- The vertical-align: -0.125em is necessary. See https://github.com/twbs/icons/issues/82-->
-                              <svg class="bi bi-info-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -0.125em">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
-                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
-                              </svg></span>
-                  </label>
-                  <select class="form-select w-80 mb-2" id="discount-rate" onchange="calculate()">
-                    <option selected>2.8% (WACC)</option>
-                    <option>3.6% (WACC, average risk-premium 100 years)</option>
-                    <option>5%</option>
-                    <option>8%</option>
-                  </select>
-        </div>
       </div>
     </div>
     <!--include includes/footer.pug-->
