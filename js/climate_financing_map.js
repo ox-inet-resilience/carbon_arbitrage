@@ -60,7 +60,10 @@ const setLegend = (_colorScale, absoluteUnit) => {
   }
   const legend = Legend(
     _colorScale,
-    {tickFormat: ".0f", title: absoluteUnit ? "Billion dollars" : "% of GDP"})
+    {
+      tickFormat: absoluteUnit ? ".0f" : ".1f",
+      title: absoluteUnit ? "Billion dollars" : "% of GDP"
+    })
   legendContainer.appendChild(legend)
 }
 
