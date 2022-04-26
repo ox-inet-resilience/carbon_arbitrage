@@ -106,6 +106,14 @@ export function calculate() {
       Plot.ruleY([0]),
       // Vertical line to separate 2 different ways of grouping the countries.
       Plot.tickX(["Emerging Market Countries"], { strokeDasharray: "4 2", dx: 32}),
+      // Texts describing the 2 different groupings.
+      Plot.text(
+        {length: 2},
+        {
+          x: ["Developing Countries", "North America"],
+          y: [25, 25],
+          text: ["By level of\ndevelopment", "By region"],
+        })
     ],
     style: {
       //fontSize: "14px",
