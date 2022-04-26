@@ -103,7 +103,9 @@ export function calculate() {
         y: "climate_financing",
         fill: "label",
       }),
-      Plot.ruleY([0])
+      Plot.ruleY([0]),
+      // Vertical line to separate 2 different ways of grouping the countries.
+      Plot.tickX(["Emerging Market Countries"], { strokeDasharray: "4 2", dx: 32}),
     ],
     style: {
       //fontSize: "14px",
