@@ -83,8 +83,10 @@ export function calculate() {
   const labels = ["2024-2050", "2051-2070", "2071-2100"]
   const sortedX = ["World", "Developed Countries", "Developing Countries", "Emerging Market Countries", "Asia", "Africa", "North America", "Latin America & the Carribean", "Europe", "Australia & New Zealand"]
   const ylabel = absoluteUnit ? "Present value of climate financing (trillion dollars)" : "Present value of climate financing / GDP of time period (%)"
+  // 60% of the screen
+  const width = window.screen.availWidth * 0.6
   const plot = Plot.plot({
-    width: 700,
+    width,
     marginBottom: 130,
     x: {
       tickRotate: -45,
@@ -108,7 +110,7 @@ export function calculate() {
       }),
       Plot.ruleY([0]),
       // Vertical line to separate 2 different ways of grouping the countries.
-      Plot.tickX(["Emerging Market Countries"], { strokeDasharray: "4 2", dx: 32}),
+      Plot.tickX(["Emerging Market Countries"], { strokeDasharray: "4 2", dx: width * 0.045}),
       // Texts describing the 2 different groupings.
       Plot.text(
         {length: 2},
