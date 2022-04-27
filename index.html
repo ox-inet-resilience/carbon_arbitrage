@@ -74,7 +74,7 @@
                     <option>2070</option>
                     <option selected>2100</option>
                   </select>
-              <label class="form-label" for="phaseout-scenario">Coal phase out scenario<span class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="The pathway according to which coal is phased out. “Net Zero 2050 (NGFS global scenario)” uses a pathway developed by the Network for Greening the Financial System (NGFS) to phase out coal in line with the net zero 2050 ambitions. “Halt to coal production” represents a benchmark scenario where coal production would be halted completely from t+2 onwards, where t+2=2024.">
+              <label class="form-label" for="phaseout-scenario">Coal phase out scenario<span class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="The pathway according to which coal is phased out. “Net Zero 2050 (NGFS global scenario)” uses a pathway developed by the Network for Greening the Financial System (NGFS) to phase out coal in line with the net zero 2050 ambitions. “Halt to coal production” represents a benchmark scenario where coal production would be halted completely from 2024 onwards.">
                           <!-- The vertical-align: -0.125em is necessary. See https://github.com/twbs/icons/issues/82-->
                           <svg class="bi bi-info-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -0.125em">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
@@ -98,7 +98,7 @@
                 <option selected>50% solar, 50% wind</option>
                 <option>0% solar, 100% wind</option>
               </select>
-              <label class="form-label" for="lifetime-renewable-plants">Investment costs - lifetime renewable plants
+              <label class="form-label" for="lifetime-renewable-plants">Lifetime of renewable plants
               </label>
               <select class="form-select w-80 mb-2" id="lifetime-renewable-plants" onchange="calculate()">
                 <option selected>30 years</option>
@@ -115,7 +115,7 @@
                 <option selected>Learning (investment cost drop because of learning)</option>
                 <option>No learning (no investment cost drop)</option>
               </select>
-                  <label class="form-label" for="discount-rate">Discount rate ρ<span class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="The discount rate is used to obtain the present value of costs of phasing out coal over [t+2, T]. WACC stands for the weighted average costs of capital.">
+                  <label class="form-label" for="discount-rate">Discount rate ρ<span class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="The discount rate is used to obtain the present value of costs of phasing out coal over 2024 to the horizon. WACC stands for the weighted average costs of capital.">
                               <!-- The vertical-align: -0.125em is necessary. See https://github.com/twbs/icons/issues/82-->
                               <svg class="bi bi-info-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -0.125em">
                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
