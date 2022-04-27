@@ -9,6 +9,7 @@ const arbitragePeriod = 1 + (2100 - (NGFS_PEG_YEAR + 1))
 
 const calculatePlotData = (yearlyCostsDict, discountRateText, absoluteUnit) => {
   const plotData = []
+  let maxCFValue = 0
   const yearStartEnds = [[NGFS_PEG_YEAR + 1, 2050], [2051, 2070], [2071, 2100]]
   const discountRate = discountRateMap[discountRateText]
 
@@ -41,6 +42,7 @@ const calculatePlotData = (yearlyCostsDict, discountRateText, absoluteUnit) => {
         region: k,
         climate_financing: cf,
       })
+      maxCFValue = Math.max(maxCFValue, cf)
     }
     for (const [region, regionCountries] of Object.entries(byRegionMap)) {
       const _region_cost = _get_year_range_cost(
@@ -59,9 +61,10 @@ const calculatePlotData = (yearlyCostsDict, discountRateText, absoluteUnit) => {
         region,
         climate_financing: cf,
       })
+      maxCFValue = Math.max(maxCFValue, cf)
     }
   }
-  return plotData
+  return [plotData, maxCFValue]
 }
 
 export function calculate() {
@@ -75,7 +78,7 @@ export function calculate() {
   const yearlyCostsDict = sensitivityAnalysisResult[key + " NON-DISCOUNTED"]
   const unit = _get("requisite-climate-financing-unit")
   const absoluteUnit = unit === "Trillion dollars"
-  const plotData = calculatePlotData(yearlyCostsDict, discountRate, absoluteUnit)
+  const [plotData, maxCF] = calculatePlotData(yearlyCostsDict, discountRate, absoluteUnit)
 
   const labels = ["2024-2050", "2051-2070", "2071-2100"]
   const sortedX = ["World", "Developed Countries", "Developing Countries", "Emerging Market Countries", "Asia", "Africa", "North America", "Latin America & the Carribean", "Europe", "Australia & New Zealand"]
@@ -111,7 +114,7 @@ export function calculate() {
         {length: 2},
         {
           x: ["Developing Countries", "North America"],
-          y: [25, 25],
+          y: [maxCF, maxCF],
           text: ["By level of\ndevelopment", "By region"],
         })
     ],
