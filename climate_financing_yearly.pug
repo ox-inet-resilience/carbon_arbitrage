@@ -14,7 +14,7 @@ html(lang="en")
 
     div.d-flex.flex-column.flex-lg-row.justify-content-center
       // Input
-      div(class="d-flex flex-wrap justify-content-center py-3 mb-4", style="margin:0 auto")
+      div(class="d-flex flex-wrap justify-content-center mb-4", style="margin:0 auto").py-3.px-3
         .flex-column
           +cfUnitAnnual("Billion dollars")
 
@@ -33,7 +33,7 @@ html(lang="en")
                 option= val
             optgroup(label="Country")#all-countries
       // Output
-      div#timeseries(style="width:700px; margin:0 auto;").ms-auto
+      div#timeseries(style="width:60%; margin:0 auto;").ms-auto.py-3.px-3
 
     script(src="https://cdn.jsdelivr.net/npm/d3@7")
     script(src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.4")

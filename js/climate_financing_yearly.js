@@ -89,8 +89,10 @@ export function calculate() {
 
   const plotData = calculatePlotData(yearlyCostsDict, selectedRegion, absoluteUnit)
   const ylabel = absoluteUnit ? "Annual climate financing (billion dollars) — non-discounted" : "Annual climate financing / GDP (%) — non-discounted"
+  // 60% of the screen
+  const width = window.screen.availWidth * 0.6
   const plot = Plot.plot({
-    width: 700,
+    width,
     x: {
       label: "Time",
     },
