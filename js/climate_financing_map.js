@@ -72,8 +72,14 @@ let costDict = calculateCostDict("Learning (investment cost drop because of lear
 let colorScale = calculateColorScale(costDict)
 setLegend(colorScale, true)
 
+// Will have the value of 1200 when the screen width is 1280
+const width = window.screen.availWidth * 0.9375
+const screenScale = width / 1200
 const svg = d3.select("#map")
-const path = d3.geoPath().projection(d3.geoMercator().scale(170).translate([600, 300]))
+svg.style("width", width + "px")
+svg.style("height", width * 5 / 12 + "px")
+
+const path = d3.geoPath().projection(d3.geoMercator().scale(170 * screenScale).translate([600 * screenScale, 300 * screenScale]))
 
 const getCost = (alpha2) => {
   if (!alpha2) {
