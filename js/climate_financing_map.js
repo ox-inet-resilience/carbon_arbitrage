@@ -68,7 +68,7 @@ const setLegend = (_colorScale, absoluteUnit) => {
 }
 
 // Default value
-let costDict = calculateCostDict("Learning (investment cost drop because of learning)_30_50% solar, 50% wind_Net Zero 2050 (NGFS global scenario)", "2.8% (WACC)", yearEndDefaultValue, true)
+let costDict = calculateCostDict("Learning (investment cost drop because of learning)_30_50% solar, 25% wind onshore, 25% wind offshore_Net Zero 2050 (NGFS global scenario)", "2.8% (WACC)", yearEndDefaultValue, true)
 let colorScale = calculateColorScale(costDict)
 setLegend(colorScale, true)
 
