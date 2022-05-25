@@ -8,7 +8,6 @@ html(lang="en")
     include includes/header.pug
 
     script(src="js/climate_financing_yearly.js" type="module")
-    script(src="js/iso-3166-data.js")
 
     include includes/mixins.pug
 
@@ -41,6 +40,7 @@ html(lang="en")
     // Needed to enable Bootstrap tooltips
     script(src="js/enable_tooltips.js")
     script(type="module").
+      import {iso3166} from "./js/iso-3166-data.js"
       import {calculate} from "./js/climate_financing_yearly.js"
       window.calculate = calculate
       calculate()

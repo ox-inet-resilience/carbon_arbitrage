@@ -5,6 +5,7 @@ import {sensitivityAnalysisResult} from "./website_sensitivity_climate_financing
 import {gdpMarketcap2020} from "./all_countries_gdp_marketcap_2020_data.js"
 import {calculateDiscountedSum, discountRateMap, NGFS_PEG_YEAR} from "./common.js"
 import {Legend} from "./d3-color-legend.js"
+import {iso3166} from "./iso-3166-data.js"
 
 const arbitragePeriod = yearEnd => 1 + (yearEnd - (NGFS_PEG_YEAR + 1))
 const yearEndDefaultValue = 2100
