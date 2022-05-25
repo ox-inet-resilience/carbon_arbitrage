@@ -100,11 +100,11 @@
                         </svg></span>
             </label>
             <select class="form-select w-80 mb-2" id="coal-replacement" onchange="calculate()">
-              <option>100% solar, 0% wind</option>
-              <option>56% solar, 42% wind onshore, 2% wind offshore</option>
-              <option selected>50% solar, 25% wind onshore, 25% wind offshore</option>
-              <option>0% solar, 100% wind onshore, 0% wind offshore</option>
-              <option>0% solar, 0% wind onshore, 100% wind offshore</option>
+              <option value="100% solar, 0% wind">100% solar, 0% wind</option>
+              <option value="56% solar, 42% wind onshore, 2% wind offshore">56% solar, 44% wind (42% onshore, 2% offshore)</option>
+              <option selected value="50% solar, 25% wind onshore, 25% wind offshore">50% solar, 50% wind (25% onshore, 25% offshore)</option>
+              <option value="0% solar, 100% wind onshore, 0% wind offshore">0% solar, 100% wind (100% onshore, 0% offshore)</option>
+              <option value="0% solar, 0% wind onshore, 100% wind offshore">0% solar, 100% wind (0% onshore, 100% offshore)</option>
             </select>
             <label class="form-label" for="lifetime-renewable-plants">Lifetime of renewable plants
             </label>

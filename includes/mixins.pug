@@ -20,15 +20,19 @@ mixin slider(id, label, min, max, step, value, unit, info=false)
     output= value
     | !{unit}
 
-mixin inputSelect(id, label, selected, vals, info=false)
+mixin inputSelect(id, label, selected, titles, info=false, vals=false)
   label(for=id).form-label
     = label
     if info
       +moreInfo(info)
   select(id=id, onchange="calculate()").form-select.w-80.mb-2
-    each val in vals
-      - var isSelected = selected == val
-      option(selected= isSelected)= val
+    each title, index in titles
+      - var isSelected = selected == title
+      - var val = vals[index]
+      if val
+        option(selected= isSelected value= val)= title
+      else
+        option(selected= isSelected)= title
 
 mixin discountRate
   +inputSelect(
