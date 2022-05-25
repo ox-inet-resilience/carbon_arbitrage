@@ -40,7 +40,7 @@ html(lang="en")
 
     div.d-flex.flex-column.flex-lg-row.justify-content-center
       // Input
-      div(class="d-flex flex-wrap justify-content-center py-3 mb-4", style="margin:0 auto")
+      div(class="d-flex flex-wrap py-3 mb-4").mx-auto.me-lg-3.px-3
         .flex-column
           +slider("social-cost-of-carbon", "Social cost of carbon", 25, 400, 25, 75, " USD/tCO<sub>2</sub>", "The social cost of carbon is an estimate of the economic costs, or damages, of emitting one additional ton of carbon dioxide into the atmosphere, and thus the benefits of reducing emissions.")
 
@@ -51,7 +51,7 @@ html(lang="en")
           +discountRate
 
       // Output
-      div(style="width:700px; margin:0 auto;").ms-auto
+      div(style="width:700px").mx-auto.ms-lg-3.px-3
         h4 Result
         table.table.table-hover
           tr
