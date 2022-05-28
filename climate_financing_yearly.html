@@ -13,7 +13,8 @@
           <li class="nav-item">
             <div class="dropdown"><a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="ClimateFinancingDropdown">Climate Financing</a>
               <ul class="dropdown-menu" aria-labelledby="ClimateFinancingDropdown">
-                <li><a class="dropdown-item" href="climate_financing_map.html">Country</a></li>
+                <!--li-->
+                <!--  a.dropdown-item(href="climate_financing_map.html") Country-->
                 <li><a class="dropdown-item" href="climate_financing.html">Regional</a></li>
                 <li><a class="dropdown-item" href="climate_financing_yearly.html">Annual</a></li>
               </ul>
@@ -99,7 +100,7 @@
               <option>Europe</option>
               <option>Australia &amp; New Zealand</option>
             </optgroup>
-            <optgroup label="Country" id="all-countries"></optgroup>
+            <!--optgroup(label="Country")#all-countries-->
           </select>
         </div>
       </div>
@@ -124,10 +125,10 @@
       calculate()
       
       // Insert all countries into the region selector dropdown
-      const allCountries = document.getElementById("all-countries")
-      for (const e of iso3166) {
-        allCountries.appendChild(new Option(e.name, e["alpha-2"]))
-      }
+      //const allCountries = document.getElementById("all-countries")
+      //for (const e of iso3166) {
+      //  allCountries.appendChild(new Option(e.name, e["alpha-2"]))
+      //}
     </script>
   </body>
 </html>
