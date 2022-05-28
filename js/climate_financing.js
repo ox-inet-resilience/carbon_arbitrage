@@ -85,7 +85,7 @@ export function calculate() {
   document.getElementById("result-data").innerHTML = jsonData
   const downloadElement = document.getElementById("download-result-data")
   downloadElement.href = "data:x-application/xml;charset=utf-8," + escape(jsonData)
-  downloadElement.download = `${key}_${discountRate}_${unit}.json`
+  downloadElement.download = `climate_financing_pv_${key}_${discountRate}_${unit}.json`
 
   // Plotting
   const labels = ["2024-2050", "2051-2070", "2071-2100"]

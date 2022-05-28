@@ -94,7 +94,7 @@ export function calculate() {
   document.getElementById("result-data").innerHTML = jsonData
   const downloadElement = document.getElementById("download-result-data")
   downloadElement.href = "data:x-application/xml;charset=utf-8," + escape(jsonData)
-  downloadElement.download = `${key}_${selectedRegion}_${unit}.json`
+  downloadElement.download = `climate_financing_yearly_${key}_${selectedRegion}_${unit}.json`
 
   const ylabel = absoluteUnit ? "Annual climate financing (billion dollars) — non-discounted" : "Annual climate financing / GDP (%) — non-discounted"
   // 60% of the screen
