@@ -88,6 +88,10 @@ export function calculate() {
   const absoluteUnit = unit === "Billion dollars"
 
   const plotData = calculatePlotData(yearlyCostsDict, selectedRegion, absoluteUnit)
+
+  // Show raw data that can be copied
+  document.getElementById("result-data").innerHTML = JSON.stringify(plotData)
+
   const ylabel = absoluteUnit ? "Annual climate financing (billion dollars) — non-discounted" : "Annual climate financing / GDP (%) — non-discounted"
   // 60% of the screen
   const width = window.screen.availWidth * 0.6
