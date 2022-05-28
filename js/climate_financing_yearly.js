@@ -89,7 +89,7 @@ export function calculate() {
 
   const plotData = calculatePlotData(yearlyCostsDict, selectedRegion, absoluteUnit)
 
-  // Show raw data that can be copied
+  // Show raw data that can be copied/downloaded
   const jsonData = JSON.stringify(plotData)
   document.getElementById("result-data").innerHTML = jsonData
   const downloadElement = document.getElementById("download-result-data")

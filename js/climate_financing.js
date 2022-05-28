@@ -80,6 +80,14 @@ export function calculate() {
   const absoluteUnit = unit === "Trillion dollars"
   const [plotData, maxCF] = calculatePlotData(yearlyCostsDict, discountRate, absoluteUnit)
 
+  // Show raw data that can be copied/downloaded
+  const jsonData = JSON.stringify(plotData)
+  document.getElementById("result-data").innerHTML = jsonData
+  const downloadElement = document.getElementById("download-result-data")
+  downloadElement.href = "data:x-application/xml;charset=utf-8," + escape(jsonData)
+  downloadElement.download = `${key}_${discountRate}_${unit}.json`
+
+  // Plotting
   const labels = ["2024-2050", "2051-2070", "2071-2100"]
   const sortedX = ["World", "Developed Countries", "Developing Countries", "Emerging Market Countries", "Asia", "Africa", "North America", "Latin America & the Carribean", "Europe", "Australia & New Zealand"]
   const ylabel = absoluteUnit ? "Present value of climate financing (trillion dollars)" : "Present value of climate financing / GDP of time period (%)"
