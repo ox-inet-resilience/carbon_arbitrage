@@ -91,8 +91,8 @@ export function calculate() {
   const labels = ["2024-2050", "2051-2070", "2071-2100"]
   const sortedX = ["World", "Developed Countries", "Developing Countries", "Emerging Market Countries", "Asia", "Africa", "North America", "Latin America & the Carribean", "Europe", "Australia & New Zealand"]
   const ylabel = absoluteUnit ? "Present value of climate financing (trillion dollars)" : "Present value of climate financing / GDP of time period (%)"
-  // 60% of the screen
-  const width = window.screen.availWidth * 0.6
+  // 60% of the screen only if the screen size is huge.
+  const width = window.screen.availWidth < 1200 ? window.screen.availWidth * 2 : window.screen.availWidth * 0.6
   const plot = Plot.plot({
     width,
     marginBottom: 130,
