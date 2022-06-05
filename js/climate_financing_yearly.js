@@ -97,8 +97,8 @@ export function calculate() {
   downloadElement.download = `climate_financing_yearly_${key}_${selectedRegion}_${unit}.json`
 
   const ylabel = absoluteUnit ? "Annual climate financing (billion dollars) — non-discounted" : "Annual climate financing / GDP (%) — non-discounted"
-  // 60% of the screen
-  const width = window.screen.availWidth * 0.6
+  // 60% of the screen only if the screen size is huge.
+  const width = window.screen.availWidth < 1200 ? window.screen.availWidth * 2 : window.screen.availWidth * 0.6
   const plot = Plot.plot({
     width,
     x: {
