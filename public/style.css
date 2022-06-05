@@ -1,6 +1,6 @@
 /* See https://getbootstrap.com/docs/5.0/getting-started/rfs/ */
 .text-responsive {
-  font-size: calc(1.525rem + 3.3vw);
+  font-size: calc(1rem + 2vw);
 }
 
 @media (min-width: 1200px) {
