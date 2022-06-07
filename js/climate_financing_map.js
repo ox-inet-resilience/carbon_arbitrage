@@ -68,10 +68,20 @@ const setLegend = (_colorScale, absoluteUnit) => {
   legendContainer.appendChild(legend)
 }
 
+const makeDownloadableData = (costDict, key, discountRate, yearEnd, unit) => {
+  const jsonData = JSON.stringify(costDict)
+  document.getElementById("result-data").innerHTML = jsonData
+  const downloadElement = document.getElementById("download-result-data")
+  downloadElement.href = "data:x-application/xml;charset=utf-8," + escape(jsonData)
+  downloadElement.download = `climate_financing_map_${key}_${discountRate}_${yearEnd}_${unit}.json`
+}
+
 // Default value
-let costDict = calculateCostDict("Learning (investment cost drop because of learning)_30_50% solar, 25% wind onshore, 25% wind offshore_Net Zero 2050 (NGFS global scenario)", "2.8% (WACC)", yearEndDefaultValue, true)
+const defaultKey = "Learning (investment cost drop because of learning)_30_50% solar, 25% wind onshore, 25% wind offshore_Net Zero 2050 (NGFS global scenario)"
+let costDict = calculateCostDict(defaultKey, "2.8% (WACC)", yearEndDefaultValue, true)
 let colorScale = calculateColorScale(costDict)
 setLegend(colorScale, true)
+makeDownloadableData(costDict, defaultKey, "2.8% (WACC)", yearEndDefaultValue, "Billion dollars")
 
 // Will have the value of 1200 when the screen width is 1280
 const width = window.screen.availWidth * 0.9375
@@ -122,6 +132,9 @@ export const calculate = () => {
   costDict = calculateCostDict(key, discountRate, yearEnd, absoluteUnit)
   colorScale = calculateColorScale(costDict)
   setLegend(colorScale, absoluteUnit)
+
+  // Show raw data that can be copied/downloaded
+  makeDownloadableData(costDict, key, discountRate, yearEnd, unit)
 
   // Recompute color
   svg.selectAll("path")
