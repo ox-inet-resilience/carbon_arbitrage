@@ -84,7 +84,11 @@ setLegend(colorScale, true)
 makeDownloadableData(costDict, defaultKey, "2.8% (WACC)", yearEndDefaultValue, "Billion dollars")
 
 // Will have the value of 1200 when the screen width is 1280
-const width = window.screen.availWidth * 0.9375
+let width = window.screen.availWidth * 0.9375
+if (window.screen.availWidth < 1200) {
+  // Double the size when the screen size is small.
+  width *= 2
+}
 const screenScale = width / 1200
 const svg = d3.select("#map")
 svg.style("width", width + "px")
