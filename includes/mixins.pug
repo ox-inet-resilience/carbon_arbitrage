@@ -67,10 +67,12 @@ mixin cfUnit(dollarUnit)
 mixin cfUnitAnnual(dollarUnit)
   +cfUnitCommon(dollarUnit, "Annual climate financing needs, given by the annual costs of phasing out coal (i.e., annual opportunity costs of coal and investments costs in replacement energy). The non-discounted annual costs are expressed either in " + dollarUnit + " or as a percentage of annual GDP.")
 
-mixin resultDataDownload
+mixin resultDataDownload(info=false)
   details
     summary
       |Result data in JSON format (click here to view online, or 
       a#download-result-data download
       |)
+      if info
+        +moreInfo(info)
     code#result-data
