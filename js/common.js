@@ -39,6 +39,7 @@ export const _get_year_range_cost = (discountRate, yearlyCostsDict, year_start, 
 }
 
 export const discountRateMap = {
+  "0%": 0.0,
   "2.8% (WACC)": 0.02795381840850683,
   "3.6% (WACC, average risk-premium 100 years)": 0.036227985389412014,
   "5%": 0.05,

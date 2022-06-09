@@ -6,7 +6,6 @@ function calculate() {
   const learningCurve = document.getElementById("learning-curve").value
   const discountRate = document.getElementById("discount-rate").value
   const phaseoutScenario = document.getElementById("phaseout-scenario").value
-  const debug = [socialCostOfCarbon, timeHorizon, coalReplacement, lifetime, learningCurve.split("(")[0], discountRate].join("<br>")
 
   function setElement(id, name, relative = false) {
     let val = sensitivityAnalysisResult[learningCurve][parseInt(lifetime)][coalReplacement][timeHorizon][discountRate][socialCostOfCarbon][name][phaseoutScenario]
@@ -29,5 +28,4 @@ function calculate() {
   document.getElementById("carbon-arbitrage-per-tcoal").innerHTML = (cao / (parseFloat(productionAvoided) * 1e9)).toFixed(0)
   document.getElementById("carbon-arbitrage-per-tco2").innerHTML = (cao / (parseFloat(emissionsAvoided) * 1e9)).toFixed(0)
   document.getElementById("temperature-increase").innerHTML = (1.5 * parseFloat(emissionsAvoided) / 1000).toFixed(2)
-  //document.getElementById("debug").innerHTML = debug
 }
