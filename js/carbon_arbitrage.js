@@ -1,4 +1,7 @@
-function calculate() {
+// This is the data
+import {sensitivityAnalysisResult} from "./sensitivity_analysis_result.js"
+
+export function calculate() {
   const socialCostOfCarbon = document.getElementById("social-cost-of-carbon").value
   const timeHorizon = document.getElementById("time-horizon").value
   const coalReplacement = document.getElementById("coal-replacement").value

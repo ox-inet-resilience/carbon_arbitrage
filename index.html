@@ -33,8 +33,7 @@
         </ul>
       </header>
     </div>
-    <script src="js/sensitivity_analysis_result.js"></script>
-    <script src="js/carbon_arbitrage.js"></script>
+    <script src="js/carbon_arbitrage.js" type="module"></script>
     <div class="p-5" style="width: 80%; margin:0 auto">
       <p style="text-align: center"><em>
           We measure gains from phasing out coal as the social cost of carbon
@@ -68,8 +67,8 @@
                             </svg></span>
                 </label>
                 <!-- https://stackoverflow.com/questions/10004723/html5-input-type-range-show-range-value-->
-                <input class="form-range w-80" id="social-cost-of-carbon" type="range" min="25" max="400" step="25" value="75" oninput="this.nextElementSibling.value = this.value; calculate()">&nbsp;
-                <output>75</output> USD/tCO<sub>2</sub>
+                <input class="form-range w-80" id="social-cost-of-carbon" type="range" min="20" max="300" step="20" value="80" oninput="this.nextElementSibling.value = this.value; calculate()">&nbsp;
+                <output>80</output> USD/tCO<sub>2</sub>
               </div>
                   <label class="form-label" for="time-horizon">Time horizon of carbon arbitrage<span class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="The last year in which costs are made to phase out coal.">
                               <!-- The vertical-align: -0.125em is necessary. See https://github.com/twbs/icons/issues/82-->
@@ -247,5 +246,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <!-- Needed to enable Bootstrap tooltips-->
     <script src="js/enable_tooltips.js"></script>
+    <script type="module">
+      import {calculate} from "./js/carbon_arbitrage.js"
+      window.calculate = calculate
+    </script>
   </body>
 </html>
