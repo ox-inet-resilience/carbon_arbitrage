@@ -34,7 +34,7 @@ const getMin = obj => {
 
 const calculateCostDict = (key, discountRateText, yearEnd, absoluteUnit) => {
   const discountRate = discountRateMap[discountRateText]
-  const yearlyCostsDict = sensitivityAnalysisResult[key + " NON-DISCOUNTED"]
+  const yearlyCostsDict = sensitivityAnalysisResult[key]
   const costDict = {}
   const yearStart = NGFS_PEG_YEAR + 1
   for (const [key, value] of Object.entries(yearlyCostsDict)) {
@@ -123,7 +123,7 @@ const fillCost = (absoluteUnit) => (d) => {
 
 export const calculate = () => {
   const _get = (id) => document.getElementById(id).value
-  const phaseoutScenario = _get("phaseout-scenario")
+  const phaseoutScenario = "Net Zero 2050 (NGFS global scenario) NON-DISCOUNTED"
   const coalReplacement = _get("coal-replacement")
   const lifetime = _get("lifetime-renewable-plants")
   const learningCurve = _get("learning-curve")

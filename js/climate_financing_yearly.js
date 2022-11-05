@@ -75,12 +75,12 @@ const calculatePlotData = (yearlyCostsDict, selectedRegion, absoluteUnit) => {
 
 export function calculate() {
   const _get = (id) => document.getElementById(id).value
-  const phaseoutScenario = _get("phaseout-scenario")
+  const phaseoutScenario = "Net Zero 2050 (NGFS global scenario) NON-DISCOUNTED"
   const coalReplacement = _get("coal-replacement")
   const lifetime = _get("lifetime-renewable-plants")
   const learningCurve = _get("learning-curve")
   const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, phaseoutScenario].join("_")
-  const yearlyCostsDict = sensitivityAnalysisResult[key + " NON-DISCOUNTED"]
+  const yearlyCostsDict = sensitivityAnalysisResult[key]
 
   const selectedRegion = _get("by-region")
 
