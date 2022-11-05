@@ -8,10 +8,9 @@ export function calculate() {
   const lifetime = document.getElementById("lifetime-renewable-plants").value
   const learningCurve = document.getElementById("learning-curve").value
   const discountRate = document.getElementById("discount-rate").value
-  const phaseoutScenario = document.getElementById("phaseout-scenario").value
 
   function setElement(id, name, relative = false) {
-    let val = sensitivityAnalysisResult[learningCurve][parseInt(lifetime)][coalReplacement][timeHorizon][discountRate][socialCostOfCarbon][name][phaseoutScenario]
+    let val = sensitivityAnalysisResult[learningCurve][parseInt(lifetime)][coalReplacement][timeHorizon][discountRate][socialCostOfCarbon][name]
     if (relative) {
       val = val.toFixed(1) + " %"
     }
