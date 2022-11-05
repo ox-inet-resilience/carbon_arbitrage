@@ -58,7 +58,7 @@ html(lang="en")
           tr
             td Present value of benefits of phasing out coal (in trillion dollars)
             td
-              output#pv-benefits 106.92
+              output#pv-benefits 114.04
           tr
             td
               |Present value of costs of phasing out coal (in trillion dollars)
@@ -83,23 +83,23 @@ html(lang="en")
               |Carbon arbitrage (in trillion dollars)
               +moreInfo("Difference between present value of benefits and costs of phasing out coal.")
             td
-              output#carbon-arbitrage 77.89
+              output#carbon-arbitrage 85.01
           tr.table-success
             td
               |Carbon arbitrage relative to world GDP
               +moreInfo("Carbon arbitrage relative to GDP every year from t+2 until time T, where t+2=2024 and T=time horizon of carbon arbitrage.")
             td
-              output#carbon-arbitrage-relative-gdp 1.2 %
+              output#carbon-arbitrage-relative-gdp 1.3 %
           tr.table-success
             td Carbon arbitrage (in dollars) per tonne of coal production
             td
-              output#carbon-arbitrage-per-tcoal 125
+              output#carbon-arbitrage-per-tcoal 136
           tr.table-success
             td
               |Carbon arbitrage (in dollars) per tCO
               sub 2
             td
-              output#carbon-arbitrage-per-tco2 55
+              output#carbon-arbitrage-per-tco2 60
           tr
             td Total coal production prevented (Giga Tonnes)
             td
@@ -126,3 +126,4 @@ html(lang="en")
     script(type="module").
       import {calculate} from "./js/carbon_arbitrage.js"
       window.calculate = calculate
+      calculate()
