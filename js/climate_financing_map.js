@@ -77,7 +77,7 @@ const makeDownloadableData = (costDict, key, discountRate, yearEnd, unit) => {
 }
 
 // Default value
-const defaultKey = "Learning (investment cost drop because of learning)_30_50% solar, 25% wind onshore, 25% wind offshore_Net Zero 2050 (NGFS global scenario)"
+const defaultKey = "Learning (investment cost drop because of learning)_30_50% solar, 25% wind onshore, 25% wind offshore"
 let costDict = calculateCostDict(defaultKey, "2.8% (WACC)", yearEndDefaultValue, true)
 let colorScale = calculateColorScale(costDict)
 setLegend(colorScale, true)
@@ -123,13 +123,12 @@ const fillCost = (absoluteUnit) => (d) => {
 
 export const calculate = () => {
   const _get = (id) => document.getElementById(id).value
-  const phaseoutScenario = "Net Zero 2050 (NGFS global scenario) NON-DISCOUNTED"
   const coalReplacement = _get("coal-replacement")
   const lifetime = _get("lifetime-renewable-plants")
   const learningCurve = _get("learning-curve")
   const discountRate = _get("discount-rate")
   const yearEnd = parseInt(_get("time-horizon"))
-  const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, phaseoutScenario].join("_")
+  const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement].join("_")
   const unit = _get("requisite-climate-financing-unit")
   const absoluteUnit = unit === "Billion dollars"
 
