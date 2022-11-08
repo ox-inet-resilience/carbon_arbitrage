@@ -30,7 +30,19 @@ div.container
             li
               a.dropdown-item(href="coal_worker.html") Coal worker
       li.nav-item
-        a(href="https://www.imf.org/en/Publications/WP/Issues/2022/05/31/The-Great-Carbon-Arbitrage-518464").nav-link.active Paper
+        .dropdown
+          a(
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            id="paperDropdown"
+          ).nav-link.active.dropdown-toggle Paper
+          ul(aria-labelledby="paperDropdown").dropdown-menu
+            li
+              a.dropdown-item(href="https://cepr.org/publications/dp17654") CEPR
+            li
+              a.dropdown-item(href="https://www.imf.org/en/Publications/WP/Issues/2022/05/31/The-Great-Carbon-Arbitrage-518464") IMF
       li.nav-item
         a(href="https://github.com/ox-inet-resilience/carbon_arbitrage_code").nav-link.active Code
       li.nav-item
