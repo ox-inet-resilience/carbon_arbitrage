@@ -2,8 +2,10 @@
 
 // This is the data
 import {sensitivityAnalysisResult} from "./coal_worker_sensitivity_analysis.js"
+import {sensitivityAnalysisResultPhaseOut} from "./website_sensitivity_opportunity_costs_phase_out.js"
 import {Legend} from "./d3-color-legend.js"
 import {iso3166} from "./iso-3166-data.js"
+import {calculateDiscountedSum, discountRateMap, NGFS_PEG_YEAR} from "./common.js"
 
 // Data taken from https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes/blob/master/slim-2/slim-2.json
 const isoNumber2Alpha2 = {}
@@ -27,15 +29,43 @@ const getMin = obj => {
   return obj[key]
 }
 
-const calculateCostDict = (discountRateText) => {
+const getPhaseOut = (phaseOut, countryName, discountRateText) => {
+  // phaseOut unit is in billion dollars
+  const timeSeries = phaseOut[countryName]
+  if (!timeSeries) {
+    return 0.0
+  }
+  const discountRate = discountRateMap[discountRateText]
+  const yearStart = 2022
+  const yearEnd = 2100
+  return calculateDiscountedSum(timeSeries.slice(yearStart - 2022, yearEnd - 2022 + 1), discountRate, yearStart)
+}
+
+const calculateCostDict = (discountRateText, ocType) => {
+  const phaseOut = sensitivityAnalysisResultPhaseOut[discountRateText]
   const data = sensitivityAnalysisResult[discountRateText]
   const lostWageObj = data["compensation workers for lost wages"]
   const retrainCostObj = data["retraining costs"]
 
   const costDict = {}
 
-  for (const [key, value] of Object.entries(lostWageObj)) {
-    costDict[key] = value + retrainCostObj[key]
+  for (const key of Object.keys(lostWageObj)) {
+    let value
+    switch (ocType) {
+      case "Compensation missed cash flows of coal companies":
+        value = getPhaseOut(phaseOut, key, discountRateText)
+        break
+      case "Compensation lost wages of coal workers":
+        value = lostWageObj[key]
+        break
+      case "Compensation retraining costs":
+        value = retrainCostObj[key]
+        break
+      case "All of the above":
+        value = getPhaseOut(phaseOut, key, discountRateText) + (lostWageObj[key] || 0.0) + (retrainCostObj[key] || 0.0)
+        break
+    }
+    costDict[key] = value
   }
   return costDict
 }
@@ -67,7 +97,7 @@ const makeDownloadableData = (costDict, discountRate) => {
 }
 
 // Default value
-let costDict = calculateCostDict("2.8% (WACC)")
+let costDict = calculateCostDict("2.8% (WACC)", "Compensation missed cash flows of coal companies")
 let colorScale = calculateColorScale(costDict)
 setLegend(colorScale)
 makeDownloadableData(costDict, "2.8% (WACC)")
@@ -102,15 +132,15 @@ const fillCost = (d) => {
     d.costText = (cost ? cost.toFixed(2) : 0.0) + unit
   }
 
-  console.log(alpha2, colorScale(cost || 0.0))
   return colorScale(cost || 0.0)
 }
 
 export const calculate = () => {
   const _get = (id) => document.getElementById(id).value
   const discountRate = _get("discount-rate")
+  const ocType = _get("opportunity-costs-type")
 
-  costDict = calculateCostDict(discountRate)
+  costDict = calculateCostDict(discountRate, ocType)
   colorScale = calculateColorScale(costDict)
   setLegend(colorScale)
 

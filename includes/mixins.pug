@@ -84,3 +84,11 @@ mixin energyStorage
     "Not included",
     ["Not included", "Short-term storage", "Short-term + long-term storage"]
   )
+
+mixin opportunityCostsType
+  +inputSelect(
+    "opportunity-costs-type",
+    "Type of opportunity costs",
+    "Compensation missed cash flows of coal companies",
+    ["Compensation missed cash flows of coal companies", "Compensation lost wages of coal workers", "Compensation retraining costs", "All of the above"]
+  )
