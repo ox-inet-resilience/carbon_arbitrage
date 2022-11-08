@@ -77,7 +77,7 @@ const makeDownloadableData = (costDict, key, discountRate, yearEnd, unit) => {
 }
 
 // Default value
-const defaultKey = "Learning (investment cost drop because of learning)_30_50% solar, 25% wind onshore, 25% wind offshore"
+const defaultKey = "Learning (investment cost drop because of learning)_30_50% solar, 25% wind onshore, 25% wind offshore_Not included"
 let costDict = calculateCostDict(defaultKey, "2.8% (WACC)", yearEndDefaultValue, true)
 let colorScale = calculateColorScale(costDict)
 setLegend(colorScale, true)
@@ -128,7 +128,8 @@ export const calculate = () => {
   const learningCurve = _get("learning-curve")
   const discountRate = _get("discount-rate")
   const yearEnd = parseInt(_get("time-horizon"))
-  const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement].join("_")
+  const energyStorage = _get("energy-storage")
+  const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, energyStorage].join("_")
   const unit = _get("requisite-climate-financing-unit")
   const absoluteUnit = unit === "Billion dollars"
 
