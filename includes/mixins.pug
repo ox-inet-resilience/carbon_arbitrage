@@ -76,3 +76,11 @@ mixin resultDataDownload(info=false)
       if info
         +moreInfo(info)
     code#result-data
+
+mixin energyStorage
+  +inputSelect(
+    "energy-storage",
+    "Investment costs in energy storage",
+    "Not included",
+    ["Not included", "Short-term storage", "Short-term + long-term storage"]
+  )

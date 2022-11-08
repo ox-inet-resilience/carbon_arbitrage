@@ -73,7 +73,8 @@ export function calculate() {
   const lifetime = _get("lifetime-renewable-plants")
   const learningCurve = _get("learning-curve")
   const discountRate = _get("discount-rate")
-  const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement].join("_")
+  const energyStorage = _get("energy-storage")
+  const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, energyStorage].join("_")
   const yearlyCostsDict = sensitivityAnalysisResult[key]
   const unit = _get("requisite-climate-financing-unit")
   const absoluteUnit = unit === "Trillion dollars"

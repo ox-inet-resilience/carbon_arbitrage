@@ -78,7 +78,8 @@ export function calculate() {
   const coalReplacement = _get("coal-replacement")
   const lifetime = _get("lifetime-renewable-plants")
   const learningCurve = _get("learning-curve")
-  const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement].join("_")
+  const energyStorage = _get("energy-storage")
+  const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, energyStorage].join("_")
   const yearlyCostsDict = sensitivityAnalysisResult[key]
 
   const selectedRegion = _get("by-region")

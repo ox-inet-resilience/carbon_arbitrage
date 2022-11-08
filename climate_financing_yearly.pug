@@ -25,6 +25,8 @@ html(lang="en")
 
           include includes/common_user_inputs.pug
 
+          +energyStorage
+
           label(for="by-region").form-label= Region
           select(id="by-region", onchange="calculate()").form-select.w-80
             optgroup(label="Level of development")
