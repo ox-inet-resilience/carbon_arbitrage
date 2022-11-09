@@ -27,8 +27,20 @@ div.container
               a.dropdown-item(href="climate_financing.html") Regional
             li
               a.dropdown-item(href="climate_financing_yearly.html") Annual
+      li.nav-item
+        .dropdown
+          a(
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            id="OpportunityCostsDropdown"
+          ).nav-link.active.dropdown-toggle Opportunity Costs
+          ul(aria-labelledby="OpportunityCostsDropdown").dropdown-menu
             li
-              a.dropdown-item(href="opportunity_costs.html") Opportunity costs
+              a.dropdown-item(href="opportunity_costs_map.html") Country
+            li
+              a.dropdown-item(href="opportunity_costs.html") Global
       li.nav-item
         .dropdown
           a(
