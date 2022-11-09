@@ -57,12 +57,37 @@
       </header>
     </div>
     <div class="d-flex flex-column flex-lg-row justify-content-center"><img src="public/country_specific_scatter_part5.svg"></div>
-    <!-- Data-->
-    <div class="px-3 mb-3">
-          <details>
-            <summary>Result data in JSON format (click here to view online, or <a id="download-result-data">download</a>)
-            </summary><code id="result-data"></code>
-          </details>
+    <!-- Data description-->
+    <div class="py-3" style="width: 80%; margin:0 auto">
+      <p>The data below is a JSON object that consists of 4 key-value pairs:
+        <ul>
+          <li>
+            <tt>"unilateral_cost"</tt>, which contains a JSON object of
+            <pre>{"&ltregion name&gt": &ltcost of the region's own unilateral action&gt}</pre>
+          </li>
+          <li>
+            <tt>"unilateral_benefit"</tt>, which contains a JSON object of
+            <pre>{"&ltregion name&gt": &ltbenefit of the region's own unilateral action&gt}</pre>
+          </li>
+          <li>
+            <tt>"freeloader_benefit"</tt>, which contains a JSON object with the regions doing the unilateral
+            action as the keys, and the values being the JSON objects of
+            <pre>{"&lt'freeloader' region name&gt": &ltbenefit amount&gt}</pre>
+          </li>
+          <li>
+            <tt>"global_benefit"</tt>, which contains a JSON object with the region names as the keys,
+            and the fraction of global benefit, scaled by a fraction of the region's
+            social cost of carbon, as the values.
+          </li>
+        </ul>The values are in billion dollars.
+      </p>
+      <!-- Data-->
+      <div class="px-3 mb-3">
+            <details>
+              <summary>Result data in JSON format (click here to view online, or <a id="download-result-data">download</a>)
+              </summary><code id="result-data"></code>
+            </details>
+      </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.4"></script>
