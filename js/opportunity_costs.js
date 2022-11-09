@@ -19,5 +19,5 @@ export function calculate() {
   document.getElementById("result-data").innerHTML = jsonData
   const downloadElement = document.getElementById("download-result-data")
   downloadElement.href = "data:x-application/xml;charset=utf-8," + escape(jsonData)
-  downloadElement.download = `climate_financing_coal_worker_${discountRate}.json`
+  downloadElement.download = `opportunity_costs_global_${discountRate}.json`
 }
