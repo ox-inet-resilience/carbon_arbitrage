@@ -38,7 +38,11 @@ export async function main() {
       social_cost_of_carbon: e.country_specific_scc,
     })
   }
-  document.getElementById("result-data").innerHTML = JSON.stringify(byLevelDevelopment)
+  const jsonData = JSON.stringify(byLevelDevelopment)
+  document.getElementById("result-data").innerHTML = jsonData
+  const downloadElement = document.getElementById("download-result-data")
+  downloadElement.href = "data:x-application/xml;charset=utf-8," + escape(jsonData)
+  downloadElement.download = `coasian_bargain_global.json`
 
   //// Plotting
   //const scatterplot = Plot.plot({
