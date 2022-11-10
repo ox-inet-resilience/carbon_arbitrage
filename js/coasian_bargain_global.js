@@ -44,37 +44,47 @@ export async function main() {
   downloadElement.href = "data:x-application/xml;charset=utf-8," + escape(jsonData)
   downloadElement.download = `coasian_bargain_global.json`
 
-  //// Plotting
-  //const scatterplot = Plot.plot({
-  //  x: {
-  //    label: "PV country costs (bln dollars)",
-  //  },
-  //  y: {
-  //    label: "PV country benefits (bln dollars)",
-  //  },
-  //  marks: [
-  //    //Plot.frame({stroke: "#ccc"}), // draws a light grey (#ccc) frame mark around the Plot
-  //    Plot.dot(byLevelDevelopment, {
-  //      x: "cost",
-  //      y: "benefit",
-  //      //fill: "color",
-  //      //r: "level",
-  //    })
-  //  ],
-  //  //color: {
-  //  //  scheme: "Blues", // todo: say something about defaults / add link to color cheatsheet
-  //  //  legend: true,
-  //  //  ticks: 10,
-  //  //  range: [.1,.9]
-  //  //},
-  //  //height: 300,
-  //  //width: 350
-  //})
+  // Plotting
+  const scatterplot = Plot.plot({
+    x: {
+      label: "PV country costs (bln dollars)",
+      type: "log",
+    },
+    y: {
+      label: "PV country benefits (bln dollars)",
+      type: "log",
+    },
+    marks: [
+      //Plot.frame({stroke: "#ccc"}), // draws a light grey (#ccc) frame mark around the Plot
+      Plot.dot(byLevelDevelopment, {
+        x: "cost",
+        y: "benefit",
+        fill: "level",
+        title: (d) =>
+          `${d.iso2}\ncost: ${d.cost.toFixed(2)}\nbenefit: ${d.benefit.toFixed(2)}`
+      }),
+      // Diagonal line y = x
+      Plot.line([[5e-6, 5e-6], [45, 45]])
+    ],
+    color: {
+      legend: true
+    },
+    //tooltip: {
+    //  stroke: "green", // When hovering over a circle
+    //  r: 8,
+    //}
+    //color: {
+    //  scheme: "Blues", // todo: say something about defaults / add link to color cheatsheet
+    //  legend: true,
+    //  ticks: 10,
+    //  range: [.1,.9]
+    //},
+  })
 
-  //const container = document.getElementById("scatterplot")
-  //// Clear previous plot
-  //if (container.firstChild) {
-  //  container.removeChild(container.firstChild)
-  //}
-  //container.appendChild(scatterplot)
+  const container = document.getElementById("scatterplot")
+  // Clear previous plot
+  if (container.firstChild) {
+    container.removeChild(container.firstChild)
+  }
+  container.appendChild(scatterplot)
 }
