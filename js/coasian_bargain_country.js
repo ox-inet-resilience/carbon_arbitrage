@@ -62,10 +62,8 @@ export async function main() {
       // Diagonal line y = x
       Plot.line([[2e-5, 2e-5], [67, 67]])
     ],
-    color: {
-      legend: true,
-    },
   })
+  const legend = scatterplot.legend("color")
   const freeloaderMarks = []
   let index = 0
   for (const [iso2, entry] of Object.entries(data.freeloader_benefit)) {
@@ -89,7 +87,7 @@ export async function main() {
   }
   const freeloaderplot = Plot.plot({
     x: {
-      tickFormat: (e) => "",
+      tickFormat: (e) => 0,
       ticks: 1,
     },
     y: {
@@ -108,8 +106,10 @@ export async function main() {
   // Clear previous 2 plots
   if (container.firstChild) {
     container.removeChild(container.firstChild)
+    container.removeChild(container.firstChild)
     containerFreeloader.removeChild(containerFreeloader.firstChild)
   }
   containerFreeloader.appendChild(freeloaderplot)
   container.appendChild(scatterplot)
+  container.appendChild(legend)
 }
