@@ -46,6 +46,7 @@ export async function main() {
         x: "cost",
         y: "benefit",
         stroke: "name",
+        fill: "white",
         r: 4.5,
         title: (d) =>
           `${d.name}\ncost: ${d.cost.toFixed(2)}\nbenefit: ${d.benefit.toFixed(3)}`
