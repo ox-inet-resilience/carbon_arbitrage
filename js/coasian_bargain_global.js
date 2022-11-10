@@ -1,4 +1,12 @@
 import {levelDevelopmentMap, byRegionMap} from "./countries_grouping.js"
+import {iso3166} from "./iso-3166-data.js"
+
+// Data taken from https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes/blob/master/slim-2/slim-2.json
+const alpha2ToName = {}
+for (const el of iso3166) {
+  alpha2ToName[el["alpha-2"]] = el["name"]
+}
+
 
 export async function main() {
   const dataRequest = await fetch("/public/country_specific_table_part4.csv")
@@ -49,10 +57,13 @@ export async function main() {
     x: {
       label: "PV country costs (bln dollars)",
       type: "log",
+      tickFormat: "e",
     },
     y: {
       label: "PV country benefits (bln dollars)",
       type: "log",
+      //tickFormat: d3.format(".0e"),
+      tickFormat: "e",
     },
     marks: [
       //Plot.frame({stroke: "#ccc"}), // draws a light grey (#ccc) frame mark around the Plot
@@ -60,14 +71,16 @@ export async function main() {
         x: "cost",
         y: "benefit",
         fill: "level",
+        r: 4.5,
         title: (d) =>
-          `${d.iso2}\ncost: ${d.cost.toFixed(2)}\nbenefit: ${d.benefit.toFixed(2)}`
+          `${alpha2ToName[d.iso2]}\ncost: ${d.cost.toFixed(4)}\nbenefit: ${d.benefit.toFixed(2)}`
       }),
       // Diagonal line y = x
-      Plot.line([[5e-7, 5e-7], [45, 45]])
+      Plot.line([[5e-5, 5e-5], [45, 45]])
     ],
     color: {
-      legend: true
+      legend: true,
+      range: ["#4878D0", "#6ACC64", "#EE854A"],
     },
     //tooltip: {
     //  stroke: "green", // When hovering over a circle
