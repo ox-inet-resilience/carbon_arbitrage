@@ -66,20 +66,20 @@ export async function main() {
       tickFormat: "e",
     },
     marks: [
-      //Plot.frame({stroke: "#ccc"}), // draws a light grey (#ccc) frame mark around the Plot
       Plot.dot(byLevelDevelopment, {
         x: "cost",
         y: "benefit",
         fill: "level",
         r: 4.5,
         title: (d) =>
-          `${alpha2ToName[d.iso2]}\ncost: ${d.cost.toFixed(4)}\nbenefit: ${d.benefit.toFixed(2)}`
+          `${alpha2ToName[d.iso2]}\ncost: ${d.cost.toFixed(5)}\nbenefit: ${d.benefit.toFixed(2)}`
       }),
       // Diagonal line y = x
-      Plot.line([[5e-5, 5e-5], [45, 45]])
+      Plot.line([[5e-6, 5e-6], [45, 45]])
     ],
     color: {
       legend: true,
+      // Blue, green, orange, consistent with Seaborn muted colorscheme.
       range: ["#4878D0", "#6ACC64", "#EE854A"],
     },
     //tooltip: {
