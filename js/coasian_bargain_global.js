@@ -64,7 +64,7 @@ export async function main() {
           `${d.iso2}\ncost: ${d.cost.toFixed(2)}\nbenefit: ${d.benefit.toFixed(2)}`
       }),
       // Diagonal line y = x
-      Plot.line([[5e-6, 5e-6], [45, 45]])
+      Plot.line([[5e-7, 5e-7], [45, 45]])
     ],
     color: {
       legend: true
