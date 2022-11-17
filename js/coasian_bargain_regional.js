@@ -4,7 +4,7 @@ export async function main() {
   const dataRequest = await fetch("/public/country_specific_data_part5.json")
   const data = await dataRequest.json()
   // Convert trillion to billion
-  for (const key of ["unilateral_cost", "unilateral_benefit"]) {
+  for (const key of ["unilateral_cost", "unilateral_benefit", "global_benefit"]) {
     for (const [key2, value2] of Object.entries(data[key])) {
       data[key][key2] = value2 * 1e3
     }
