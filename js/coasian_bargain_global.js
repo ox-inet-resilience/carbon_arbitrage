@@ -9,13 +9,14 @@ for (const el of iso3166) {
 
 
 export async function main() {
+  // Important: the unit is trillion, so we convert to billion later
   const dataRequest = await fetch("/public/country_specific_table_part4.csv")
   const data = await dataRequest.text()
   const parser = d => ({
     iso2: d.iso2,
-    net_benefit: +d.net_benefit,
-    benefit: +d.benefit,
-    cost: +d.cost,
+    net_benefit: (+d.net_benefit * 1e3).toFixed(2),
+    benefit: (+d.benefit * 1e3).toFixed(2),
+    cost: (+d.cost * 1e3).toFixed(2),
     country_specific_scc: +d.country_specific_scc
   })
   const parsed = d3.csvParse(data, parser)
@@ -72,10 +73,10 @@ export async function main() {
         fill: "level",
         r: 4.5,
         title: (d) =>
-          `${alpha2ToName[d.iso2]}\ncost: ${d.cost.toFixed(5)}\nbenefit: ${d.benefit.toFixed(2)}`
+          `${alpha2ToName[d.iso2]}\ncost: ${d.cost}\nbenefit: ${d.benefit}`
       }),
       // Diagonal line y = x
-      Plot.line([[5e-6, 5e-6], [45, 45]])
+      Plot.line([[5e-3, 5e-3], [45000, 45000]])
     ],
     color: {
       legend: true,

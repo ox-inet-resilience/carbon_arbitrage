@@ -8,17 +8,16 @@ for (const el of iso3166) {
 }
 
 export async function main() {
+  // Important: the unit is in trillion here, so we must convert to billion in the end.
   const dataRequest = await fetch("/public/country_specific_data_part6.json")
   const data = await dataRequest.json()
 
-  const jsonData = JSON.stringify(data)
-  document.getElementById("result-data").innerHTML = jsonData
-  const downloadElement = document.getElementById("download-result-data")
-  downloadElement.href = "data:x-application/xml;charset=utf-8," + escape(jsonData)
-  downloadElement.download = `coasian_bargain_country.json`
-
+  // Convert to billion
   const regrouped = []
   for (const iso2 of Object.keys(data.unilateral_cost)) {
+    data.unilateral_cost[iso2] *= 1e3
+    data.unilateral_benefit[iso2] *= 1e3
+    data.global_benefit[iso2] *= 1e3
     regrouped.push({
       name: alpha2ToName[iso2],
       cost: data.unilateral_cost[iso2],
@@ -26,6 +25,19 @@ export async function main() {
       global_benefit: data.global_benefit[iso2],
     })
   }
+  for (const [iso2, entry] of Object.entries(data.freeloader_benefit)) {
+    for (const [freeloader_country, freeloader_benefit] of Object.entries(entry)) {
+    data.freeloader_benefit[iso2][freeloader_country] = freeloader_benefit * 1e3
+    }
+  }
+
+  const jsonData = JSON.stringify(data)
+  document.getElementById("result-data").innerHTML = jsonData
+  const downloadElement = document.getElementById("download-result-data")
+  downloadElement.href = "data:x-application/xml;charset=utf-8," + escape(jsonData)
+  downloadElement.download = `coasian_bargain_country.json`
+
+
 
   // Plotting
   const scatterplot = Plot.plot({
@@ -34,7 +46,7 @@ export async function main() {
       type: "log",
       tickFormat: "e",
       // We ensure the y range of the 2 plots are the same
-      domain: [1.6e-05, 67.4]
+      domain: [1.6e-02, 67400]
     },
     y: {
       label: "PV country benefits (bln dollars)",
@@ -61,7 +73,7 @@ export async function main() {
           `${d.name}\ncost: ${d.cost.toFixed(2)}\nglobal benefit: ${d.global_benefit.toFixed(3)}`
       }),
       // Diagonal line y = x
-      Plot.line([[2e-5, 2e-5], [67, 67]])
+      Plot.line([[2e-2, 2e-2], [67000, 67000]])
     ],
   })
   const legend = scatterplot.legend("color")
@@ -96,7 +108,7 @@ export async function main() {
       type: "log",
       tickFormat: "e",
       // We ensure the y range of the 2 plots are the same
-      domain: [1.6e-05, 67.4]
+      domain: [1.6e-02, 67400]
     },
     marks: freeloaderMarks,
     width: 200,
