@@ -2,9 +2,8 @@ doctype html
 html(lang="en")
   head
     meta(charset="utf-8")
-    meta(name="description" content="We measure the gains from phasing out coal as the average social cost of carbon times the quantity of avoided emissions. By comparing the present value of benefits from avoided emissions against the present value of costs of ending coal and replacing it with renewables, our conservative baseline estimate is that the world can realize a net gain of $85 trillion.")
     link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous")
-    title The Great Carbon Arbitrage
+    title Case Study Indonesia
     link(rel="stylesheet", type="text/css", href="public/style.css")
   body.text-responsive
     include includes/header.pug
@@ -14,33 +13,7 @@ html(lang="en")
     include includes/mixins.pug
 
     div(style="width: 80%; margin:0 auto").p-5
-      p(style="text-align: center")
-        em
-          |We measure the gains from phasing out coal as the average social
-          |cost of carbon times the quantity of avoided emissions. By comparing
-          |the present value of benefits from avoided emissions against the
-          |present value of costs of ending coal and replacing it with renewables,
-          |our conservative baseline estimate is that the world can realize a net
-          |gain of $85 trillion. This global net social benefit can be attained
-          |through an international agreement to phase out coal. We also explore
-          |how this net benefit is distributed across countries and find that most
-          |countries would benefit from a global coal phase-out even without any
-          |compensatory cross-country transfers. Finally, we estimate the size of
-          |public funds that must be committed under a blended finance arrangement
-          |to finance the cost of replacing coal with renewables.
-
-      p
-        |The main result of the paper can be explored in this page.
-        |Additionally, you can explore the climate financing needed to phase
-        |out coal by 
-        a(href="climate_financing_map.html") country
-        | 
-        |or 
-        a(href="climate_financing.html") region
-        |, or as an 
-        a(href="climate_financing_yearly.html") annual timeseries
-        |. Feel free to pick your own parameters to generate the results (the
-        |parameters are set to the baseline settings of the paper by default).
+      h3(style="text-align: center") Case Study: Indonesia
 
     div.d-flex.flex-column.flex-lg-row.justify-content-center
       // Input
@@ -48,7 +21,7 @@ html(lang="en")
         .flex-column
           +sccSlider
 
-          +timeHorizon
+          +timeHorizonIncluding2030
 
           include includes/common_user_inputs.pug
 
@@ -61,72 +34,72 @@ html(lang="en")
           tr
             td Present value of benefits of phasing out coal (in trillion dollars)
             td
-              output#pv-benefits 114.04
+              output#pv-benefits N/A
           tr
             td
               |Present value of costs of phasing out coal (in trillion dollars)
               +moreInfo("Consists of the opportunity costs of coal and investment costs in replacement (renewable) energy.")
             td
-              output#pv-costs 29.03
+              output#pv-costs N/A
           tr
             td
               |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               |Opportunity costs (in trillion dollars)
               +moreInfo("Present value of missed free cash flows of coal companies resulting from phasing out coal.")
             td
-              output#opportunity-costs 0.05
+              output#opportunity-costs N/A
           tr
             td
               |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               |Investment costs (in trillion dollars)
             td
-              output#investment-costs 28.98
+              output#investment-costs N/A
           tr.table-success
             td
               |Carbon arbitrage (in trillion dollars)
               +moreInfo("Difference between present value of benefits and costs of phasing out coal.")
             td
-              output#carbon-arbitrage 85.01
+              output#carbon-arbitrage N/A
           tr.table-success
             td
               |Carbon arbitrage relative to world GDP
               +moreInfo("Carbon arbitrage relative to GDP every year from t+2 until time T, where t+2=2024 and T=time horizon of carbon arbitrage.")
             td
-              output#carbon-arbitrage-relative-gdp 1.3 %
+              output#carbon-arbitrage-relative-gdp N/A
           tr.table-success
             td Carbon arbitrage (in dollars) per tonne of coal production
             td
-              output#carbon-arbitrage-per-tcoal 136
+              output#carbon-arbitrage-per-tcoal N/A
           tr.table-success
             td
               |Carbon arbitrage (in dollars) per tCO
               sub 2
             td
-              output#carbon-arbitrage-per-tco2 60
+              output#carbon-arbitrage-per-tco2 N/A
           tr
             td Total coal production prevented (Giga Tonnes)
             td
-              output#coal-production-prevented 623.62
+              output#coal-production-prevented N/A
           tr
             td
               |Total emissions prevented (GtCO
               sub 2
               |)
             td
-              output#emissions-prevented 1425.55
+              output#emissions-prevented N/A
           tr
             td
               |Further temperature increase &#8212; on top of 1.1 &#8451;
               br
               |already observed &#8212; prevented
             td
-              output#temperature-increase 2.14
+              output#temperature-increase N/A
 
     //include includes/footer.pug
     script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous")
     // Needed to enable Bootstrap tooltips
     script(src="js/enable_tooltips.js")
     script(type="module").
-      import {calculate} from "./js/carbon_arbitrage.js"
+      import {calculate} from "./js/case_study.js"
       window.calculate = calculate
       calculate()

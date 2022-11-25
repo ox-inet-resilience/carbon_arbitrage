@@ -52,6 +52,15 @@ mixin timeHorizon
     "The last year in which costs are made to phase out coal."
   )
 
+mixin timeHorizonIncluding2030
+  +inputSelect(
+    "time-horizon",
+    "Time horizon of carbon arbitrage",
+    "2100",
+    ["2030", "2050", "2070", "2100"],
+    "The last year in which costs are made to phase out coal."
+  )
+
 mixin cfUnitCommon(dollarUnit, info)
   +inputSelect(
     "requisite-climate-financing-unit",
@@ -101,3 +110,6 @@ mixin phaseoutScenario
     ["Net Zero 2050 (NGFS global scenario)"],
     "The pathway according to which coal is phased out. “Net Zero 2050 (NGFS global scenario)” uses a pathway developed by the Network for Greening the Financial System (NGFS) to phase out coal in line with the net zero 2050 ambitions."
   )
+
+mixin sccSlider
+  +slider("social-cost-of-carbon", "Social cost of carbon", 20, 300, 20, 80, " USD/tCO<sub>2</sub>", "The social cost of carbon is an estimate of the economic costs, or damages, of emitting one additional ton of carbon dioxide into the atmosphere, and thus the benefits of reducing emissions.")
