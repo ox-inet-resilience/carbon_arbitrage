@@ -1,4 +1,3 @@
-import {levelDevelopmentMap, byRegionMap} from "./countries_grouping.js"
 import {iso3166} from "./iso-3166-data.js"
 
 // Data taken from https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes/blob/master/slim-2/slim-2.json
@@ -36,8 +35,6 @@ export async function main() {
   const downloadElement = document.getElementById("download-result-data")
   downloadElement.href = "data:x-application/xml;charset=utf-8," + escape(jsonData)
   downloadElement.download = `coasian_bargain_country.json`
-
-
 
   // Plotting
   const scatterplot = Plot.plot({
