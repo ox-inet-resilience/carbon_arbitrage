@@ -2,7 +2,7 @@
 
 // This is the data
 import {sensitivityAnalysisResult} from "./coal_worker_sensitivity_analysis.js"
-import {sensitivityAnalysisResultPhaseOut} from "./website_sensitivity_opportunity_costs_phase_out.js"
+import {sensitivityAnalysisResultPhaseOut} from "../public/website_sensitivity_opportunity_costs_phase_out.js"
 import {Legend} from "./d3-color-legend.js"
 import {iso3166} from "./iso-3166-data.js"
 import {calculateDiscountedSum, discountRateMap, NGFS_PEG_YEAR} from "./common.js"
@@ -41,8 +41,10 @@ const getPhaseOut = (phaseOut, countryName, discountRateText) => {
   return calculateDiscountedSum(timeSeries.slice(yearStart - 2022, yearEnd - 2022 + 1), discountRate, yearStart)
 }
 
-const calculateCostDict = (discountRateText, ocType) => {
-  const phaseOut = sensitivityAnalysisResultPhaseOut[discountRateText]
+const calculateCostDict = (timeHorizon, discountRateText, ocType) => {
+
+  const key = [discountRateText, timeHorizon].join("_")
+  const phaseOut = sensitivityAnalysisResultPhaseOut[key]
   const data = sensitivityAnalysisResult[discountRateText]
   const lostWageObj = data["compensation workers for lost wages"]
   const retrainCostObj = data["retraining costs"]
@@ -97,7 +99,7 @@ const makeDownloadableData = (costDict, discountRate) => {
 }
 
 // Default value
-let costDict = calculateCostDict("2.8% (WACC)", "Compensation missed cash flows of coal companies")
+let costDict = calculateCostDict("2100", "2.8% (WACC)", "Compensation missed cash flows of coal companies")
 let colorScale = calculateColorScale(costDict)
 setLegend(colorScale)
 makeDownloadableData(costDict, "2.8% (WACC)")
@@ -138,9 +140,10 @@ const fillCost = (d) => {
 export const calculate = () => {
   const _get = (id) => document.getElementById(id).value
   const discountRate = _get("discount-rate")
+  const timeHorizon = _get("time-horizon")
   const ocType = _get("opportunity-costs-type")
 
-  costDict = calculateCostDict(discountRate, ocType)
+  costDict = calculateCostDict(timeHorizon, discountRate, ocType)
   colorScale = calculateColorScale(costDict)
   setLegend(colorScale)
 
