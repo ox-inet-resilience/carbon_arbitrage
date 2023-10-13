@@ -1,8 +1,10 @@
 import {levelDevelopmentMap, byRegionMap} from "./countries_grouping.js"
 import {calculateGdpByRegionMap} from "./common.js"
 import {gdpMarketcap2020} from "./all_countries_gdp_marketcap_2020_data.js"
+
 // This is the data
-import {sensitivityAnalysisResult} from "./website_sensitivity_climate_financing.js"
+const fetchResp = await fetch("./js/website_sensitivity_climate_financing.json")
+const sensitivityAnalysisResult = await fetchResp.json()
 
 const gdpMap = calculateGdpByRegionMap()
 
