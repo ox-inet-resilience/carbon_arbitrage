@@ -11,8 +11,13 @@ const arbitragePeriod = 1 + (2100 - (NGFS_PEG_YEAR + 1))
 
 const calculatePlotData = (yearlyCostsDict, discountRateText, absoluteUnit) => {
   const plotData = []
-  let maxCFValue = 0
-  const yearStartEnds = [[NGFS_PEG_YEAR + 1, 2050], [2051, 2070], [2071, 2100]]
+  const yearStartEnds = [[NGFS_PEG_YEAR + 1, 2030], [2031, 2050], [2051, 2070], [2071, 2100]]
+
+  const stringifyYearRange = (start, end) => `${start}-${end}`
+  // For text annotation in the plot
+  let annotationHeight = 0
+  const yearRangeForAnnotation = [stringifyYearRange(...yearStartEnds[0]), stringifyYearRange(...yearStartEnds[1])]
+
   const discountRate = discountRateMap[discountRateText]
 
   for (const [year_start, year_end] of yearStartEnds) {
@@ -29,7 +34,7 @@ const calculatePlotData = (yearlyCostsDict, discountRateText, absoluteUnit) => {
       )
     }
 
-    const label = `${year_start}-${year_end}`
+    const label = stringifyYearRange(year_start, year_end)
     for (const [k, v] of Object.entries(byLevelDevelopment)) {
       let cf
       if (absoluteUnit) {
@@ -44,7 +49,10 @@ const calculatePlotData = (yearlyCostsDict, discountRateText, absoluteUnit) => {
         region: k,
         climate_financing: cf,
       })
-      maxCFValue = Math.max(maxCFValue, cf)
+      if (k == "World" && yearRangeForAnnotation.includes(label)) {
+        // The height is world's CF from 2024 to 2050
+        annotationHeight += cf
+      }
     }
     for (const [region, regionCountries] of Object.entries(byRegionMap)) {
       const _region_cost = _get_year_range_cost(
@@ -63,10 +71,9 @@ const calculatePlotData = (yearlyCostsDict, discountRateText, absoluteUnit) => {
         region,
         climate_financing: cf,
       })
-      maxCFValue = Math.max(maxCFValue, cf)
     }
   }
-  return [plotData, maxCFValue]
+  return [plotData, annotationHeight]
 }
 
 export function calculate() {
@@ -80,7 +87,7 @@ export function calculate() {
   const yearlyCostsDict = sensitivityAnalysisResult[key]
   const unit = _get("requisite-climate-financing-unit")
   const absoluteUnit = unit === "Trillion dollars"
-  const [plotData, maxCF] = calculatePlotData(yearlyCostsDict, discountRate, absoluteUnit)
+  const [plotData, annotationHeight] = calculatePlotData(yearlyCostsDict, discountRate, absoluteUnit)
 
   // Show raw data that can be copied/downloaded
   const jsonData = JSON.stringify(plotData)
@@ -90,7 +97,7 @@ export function calculate() {
   downloadElement.download = `climate_financing_pv_${key}_${discountRate}_${unit}.json`
 
   // Plotting
-  const labels = ["2024-2050", "2051-2070", "2071-2100"]
+  const labels = ["2024-2030", "2031-2050", "2051-2070", "2071-2100"]
   const sortedX = ["World", "Developed Countries", "Developing Countries", "Emerging Market Countries", "Asia", "Africa", "North America", "Latin America & the Carribean", "Europe", "Australia & New Zealand"]
   const ylabel = absoluteUnit ? "Present value of climate financing (trillion dollars)" : "Present value of climate financing / GDP of time period (%)"
   // 60% of the screen only if the screen size is huge.
@@ -126,7 +133,7 @@ export function calculate() {
         {length: 2},
         {
           x: ["Developing Countries", "North America"],
-          y: [maxCF, maxCF],
+          y: [annotationHeight, annotationHeight],
           text: ["By level of\ndevelopment", "By region"],
         })
     ],
