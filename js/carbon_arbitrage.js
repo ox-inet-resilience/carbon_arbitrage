@@ -3,15 +3,17 @@ const fetchResp = await fetch("./public/website_sensitivity_analysis_result.json
 const sensitivityAnalysisResult = await fetchResp.json()
 
 export function calculate() {
-  const socialCostOfCarbon = document.getElementById("social-cost-of-carbon").value
-  const timeHorizon = document.getElementById("time-horizon").value
-  const coalReplacement = document.getElementById("coal-replacement").value
-  const lifetime = document.getElementById("lifetime-renewable-plants").value
-  const learningCurve = document.getElementById("learning-curve").value
-  const discountRate = document.getElementById("discount-rate").value
+  const _get = (id) => document.getElementById(id).value
+  const socialCostOfCarbon = _get("social-cost-of-carbon")
+  const timeHorizon = _get("time-horizon")
+  const coalReplacement = _get("coal-replacement")
+  const lifetime = _get("lifetime-renewable-plants")
+  const learningCurve = _get("learning-curve")
+  const discountRate = _get("discount-rate")
+  const energyStorage = _get("energy-storage")
 
   function setElement(id, name) {
-    let val = sensitivityAnalysisResult[learningCurve][parseInt(lifetime)][coalReplacement][timeHorizon][discountRate][socialCostOfCarbon][name]
+    let val = sensitivityAnalysisResult[learningCurve][parseInt(lifetime)][coalReplacement][timeHorizon][discountRate][energyStorage][socialCostOfCarbon][name]
     document.getElementById(id).innerHTML = val
     return val
   }
