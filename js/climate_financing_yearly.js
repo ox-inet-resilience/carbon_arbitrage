@@ -95,7 +95,12 @@ export function calculate() {
   const plotData = calculatePlotData(yearlyCostsDict, selectedRegion, absoluteUnit)
 
   // Show raw data that can be copied/downloaded
-  const jsonData = JSON.stringify(plotData)
+  const formattedData = {
+    years: plotData.map(item => item.year),
+    // Round to 5 decimal places.
+    cost: plotData.map(item => parseFloat(item.cost.toFixed(5))),
+  }
+  const jsonData = JSON.stringify(formattedData)
   document.getElementById("result-data").innerHTML = jsonData
   const downloadElement = document.getElementById("download-result-data")
   downloadElement.href = "data:x-application/xml;charset=utf-8," + escape(jsonData)
