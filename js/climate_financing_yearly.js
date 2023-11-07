@@ -4,7 +4,9 @@ import {gdpMarketcap2020} from "./all_countries_gdp_marketcap_2020_data.js"
 
 // This is the data
 const fetchResp = await fetch("./js/website_sensitivity_climate_financing.json")
-const sensitivityAnalysisResult = await fetchResp.json()
+const data = await fetchResp.json()
+const fetchRespCoalExport = await fetch("./public/website_sensitivity_climate_financing_coal_export_over_battery.json")
+const dataCoalExport = await fetchRespCoalExport.json()
 
 const gdpMap = calculateGdpByRegionMap()
 
@@ -82,7 +84,8 @@ export function calculate() {
   const learningCurve = _get("learning-curve")
   const energyStorage = _get("energy-storage")
   const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, energyStorage].join("_")
-  const yearlyCostsDict = sensitivityAnalysisResult[key]
+  const enableCoalExport = _get("coal-export") === "Enabled"
+  const yearlyCostsDict = enableCoalExport ? dataCoalExport[key] : data[key]
 
   const selectedRegion = _get("by-region")
 

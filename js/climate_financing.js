@@ -3,7 +3,9 @@ import {_get_year_range_cost, discountRateMap, NGFS_PEG_YEAR, calculateGdpByRegi
 
 // This is the data
 const fetchResp = await fetch("./js/website_sensitivity_climate_financing.json")
-const sensitivityAnalysisResult = await fetchResp.json()
+const data = await fetchResp.json()
+const fetchRespCoalExport = await fetch("./public/website_sensitivity_climate_financing_coal_export_over_battery.json")
+const dataCoalExport = await fetchRespCoalExport.json()
 
 const gdpMap = calculateGdpByRegionMap()
 
@@ -84,7 +86,8 @@ export function calculate() {
   const discountRate = _get("discount-rate")
   const energyStorage = _get("energy-storage")
   const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, energyStorage].join("_")
-  const yearlyCostsDict = sensitivityAnalysisResult[key]
+  const enableCoalExport = _get("coal-export") === "Enabled"
+  const yearlyCostsDict = enableCoalExport ? dataCoalExport[key] : data[key]
   const unit = _get("requisite-climate-financing-unit")
   const absoluteUnit = unit === "Trillion dollars"
   const [plotData, annotationHeight] = calculatePlotData(yearlyCostsDict, discountRate, absoluteUnit)
