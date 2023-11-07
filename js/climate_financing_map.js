@@ -7,7 +7,9 @@ import {iso3166} from "./iso-3166-data.js"
 
 // This is the data
 const fetchResp = await fetch("./js/website_sensitivity_climate_financing.json")
-const sensitivityAnalysisResult = await fetchResp.json()
+const data = await fetchResp.json()
+const fetchRespCoalExport = await fetch("./public/website_sensitivity_climate_financing_coal_export_over_battery.json")
+const dataCoalExport = await fetchRespCoalExport.json()
 
 const arbitragePeriod = yearEnd => 1 + (yearEnd - (NGFS_PEG_YEAR + 1))
 const yearEndDefaultValue = 2100
@@ -34,9 +36,9 @@ const getMin = obj => {
   return obj[key]
 }
 
-const calculateCostDict = (key, discountRateText, yearEnd, absoluteUnit) => {
+const calculateCostDict = (key, discountRateText, yearEnd, absoluteUnit, enableCoalExport) => {
   const discountRate = discountRateMap[discountRateText]
-  const yearlyCostsDict = sensitivityAnalysisResult[key]
+  const yearlyCostsDict = enableCoalExport ? dataCoalExport[key] : data[key]
   const costDict = {}
   const yearStart = NGFS_PEG_YEAR + 1
   for (const [key, value] of Object.entries(yearlyCostsDict)) {
@@ -80,7 +82,7 @@ const makeDownloadableData = (costDict, key, discountRate, yearEnd, unit) => {
 
 // Default value
 const defaultKey = "Learning (investment cost drop because of learning)_30_50% solar, 25% wind onshore, 25% wind offshore_Not included"
-let costDict = calculateCostDict(defaultKey, "2.8% (WACC)", yearEndDefaultValue, true)
+let costDict = calculateCostDict(defaultKey, "2.8% (WACC)", yearEndDefaultValue, true, false)
 let colorScale = calculateColorScale(costDict)
 setLegend(colorScale, true)
 makeDownloadableData(costDict, defaultKey, "2.8% (WACC)", yearEndDefaultValue, "Billion dollars")
@@ -134,8 +136,9 @@ export const calculate = () => {
   const key = [learningCurve, lifetime.replace(" years", ""), coalReplacement, energyStorage].join("_")
   const unit = _get("requisite-climate-financing-unit")
   const absoluteUnit = unit === "Billion dollars"
+  const enableCoalExport = _get("coal-export") === "Enabled"
 
-  costDict = calculateCostDict(key, discountRate, yearEnd, absoluteUnit)
+  costDict = calculateCostDict(key, discountRate, yearEnd, absoluteUnit, enableCoalExport)
   colorScale = calculateColorScale(costDict)
   setLegend(colorScale, absoluteUnit)
 

@@ -113,3 +113,11 @@ mixin phaseoutScenario
 
 mixin sccSlider
   +slider("social-cost-of-carbon", "Social cost of carbon", 20, 300, 20, 80, " USD/tCO<sub>2</sub>", "The social cost of carbon is an estimate of the economic costs, or damages, of emitting one additional ton of carbon dioxide into the atmosphere, and thus the benefits of reducing emissions.")
+
+mixin coalExport
+  +inputSelect(
+    "coal-export",
+    "Coal export",
+    "Disabled",
+    ["Disabled", "Enabled"]
+  )
