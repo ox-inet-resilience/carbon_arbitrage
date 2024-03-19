@@ -86,6 +86,16 @@ mixin resultDataDownload(info=false)
         +moreInfo(info)
     code#result-data
 
+mixin resultDataDownloadCSV(info=false)
+  details
+    summary
+      |Result data in CSV format (click here to view online, or 
+      a#download-result-data download
+      |)
+      if info
+        +moreInfo(info)
+    code#result-data
+
 mixin energyStorage
   +inputSelect(
     "energy-storage",
