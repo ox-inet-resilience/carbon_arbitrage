@@ -82,7 +82,7 @@ const csvify = (dict) => {
 
 const makeDownloadableData = (costDict, key, discountRate, yearEnd, unit) => {
   const csvData = csvify(costDict)
-  document.getElementById("result-data").innerHTML = csvData.replaceAll("\n", "<br>")
+  document.getElementById("result-data").innerHTML = csvData
   const downloadElement = document.getElementById("download-result-data")
   downloadElement.href = "data:x-application/xml;charset=utf-8," + escape(csvData)
   downloadElement.download = `climate_financing_map_${key}_${discountRate}_${yearEnd}_${unit}.csv`

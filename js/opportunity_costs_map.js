@@ -90,12 +90,20 @@ const setLegend = (_colorScale) => {
   legendContainer.appendChild(legend)
 }
 
+const csvify = (dict) => {
+  let output = []
+  for (const [key, value] of Object.entries(dict)) {
+    output.push(`${key},${value}`)
+  }
+  return output.join("\n")
+}
+
 const makeDownloadableData = (costDict, discountRate) => {
-  const jsonData = JSON.stringify(costDict)
-  document.getElementById("result-data").innerHTML = jsonData
+  const csvData = csvify(costDict)
+  document.getElementById("result-data").innerHTML = csvData//.replaceAll("\n", "<br>")
   const downloadElement = document.getElementById("download-result-data")
-  downloadElement.href = "data:x-application/xml;charset=utf-8," + escape(jsonData)
-  downloadElement.download = `opportunity_costs_map_${discountRate}.json`
+  downloadElement.href = "data:x-application/xml;charset=utf-8," + escape(csvData)
+  downloadElement.download = `opportunity_costs_map_${discountRate}.csv`
 }
 
 // Default value
