@@ -100,11 +100,15 @@ export function calculate() {
     // Round to 5 decimal places.
     cost: plotData.map(item => parseFloat(item.cost.toFixed(5))),
   }
-  const jsonData = JSON.stringify(formattedData)
-  document.getElementById("result-data").innerHTML = jsonData
+  const forCsv = ["year,cost"]
+  for (const i in formattedData.years) {
+    forCsv.push(`${formattedData.years[i]},${formattedData.cost[i]}`)
+  }
+  const csvData = forCsv.join("\n")
+  document.getElementById("result-data").innerHTML = csvData
   const downloadElement = document.getElementById("download-result-data")
-  downloadElement.href = "data:x-application/xml;charset=utf-8," + escape(jsonData)
-  downloadElement.download = `climate_financing_yearly_${key}_${selectedRegion}_${unit}.json`
+  downloadElement.href = "data:x-application/xml;charset=utf-8," + escape(csvData)
+  downloadElement.download = `climate_financing_yearly_${key}_${selectedRegion}_${unit}.csv`
 
   const ylabel = absoluteUnit ? "Annual climate financing (billion dollars) — non-discounted" : "Annual climate financing / GDP (%) — non-discounted"
   // 60% of the screen only if the screen size is huge.
