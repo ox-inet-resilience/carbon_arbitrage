@@ -14,6 +14,15 @@ the same two columns. Its y axis is the same present value as row one, just
 divided by GDP instead of summed over a group, so the whole figure stays on
 one scenario and one set of numbers.
 
+A fourth row, spanning both columns, ports the left subplot of
+make_yearly_climate_financing_plot_SENSITIVITY_ANALYSIS() of the same file:
+the world annual (non-discounted) series of row two, redrawn once per
+alternative assumption. The variants are read straight out of the sensitivity
+JSON the website already ships, so this row needs no extra input; that also
+bounds it to the two dimensions the JSON varies (renewable lifetime and the
+learning curve). The "lifetime by level of development" and "LCOE proxy"
+lines of the original have no counterpart on the website and are left out.
+
 The country groupings and the GDP series are read by evaluating the js/
 modules with node, so they cannot drift from the website.
 
@@ -61,16 +70,43 @@ YEAR_START_ENDS = [(NGFS_PEG_YEAR + 1, 2030), (2031, 2050), (2051, 2070), (2071,
 # Mirrors wholeYears in js/climate_financing_yearly.js
 WHOLE_YEARS = list(range(DATA_START_YEAR, 2100 + 1))
 
+# The key layout is built in js/climate_financing.js:
+# learningCurve_lifetime_coalReplacement_energyStorage
+LEARNING = "Learning (investment cost drop because of learning)"
+NO_LEARNING = "No learning (no investment cost drop)"
+DEFAULT_LIFETIME = "30"  # years
+DEFAULT_COAL_REPLACEMENT = "50% solar, 25% wind onshore, 25% wind offshore"
+DEFAULT_ENERGY_STORAGE = "Short-term + long-term storage"
+
+
+def sensitivity_key(
+    learning_curve=LEARNING,
+    lifetime=DEFAULT_LIFETIME,
+    coal_replacement=DEFAULT_COAL_REPLACEMENT,
+    energy_storage=DEFAULT_ENERGY_STORAGE,
+):
+    return "_".join([learning_curve, lifetime, coal_replacement, energy_storage])
+
+
 # The scenario shown in barchart.png, i.e. the page defaults declared in
-# includes/common_user_inputs.pug and includes/mixins.pug. The key layout is
-# built in js/climate_financing.js: learningCurve_lifetime_coalReplacement_energyStorage
-DEFAULT_KEY = "_".join([
-    "Learning (investment cost drop because of learning)",  # learning curve
-    "30",                                                   # lifetime, years
-    "50% solar, 25% wind onshore, 25% wind offshore",       # coal replacement
-    "Short-term + long-term storage",                                         # energy storage
-])
+# includes/common_user_inputs.pug and includes/mixins.pug.
+DEFAULT_KEY = sensitivity_key()
 DEFAULT_DISCOUNT_RATE = "2.8% (WACC)"
+
+# Row four: (label, key, linestyle), the default drawn solid and every
+# deviation from it dotted, as in the original. These are the only two
+# dimensions of the sensitivity JSON that the original also varies; appending
+# e.g. sensitivity_key(energy_storage="Not included") adds a further line.
+SENSITIVITY_VARIANTS = [
+    ("30Y, learning", sensitivity_key(), "-"),
+    ("30Y, no learning", sensitivity_key(learning_curve=NO_LEARNING), "dotted"),
+    ("50Y, learning", sensitivity_key(lifetime="50"), "dotted"),
+    (
+        "50Y, no learning",
+        sensitivity_key(learning_curve=NO_LEARNING, lifetime="50"),
+        "dotted",
+    ),
+]
 
 
 # ------------------------------------------------------- groupings from JS
@@ -215,6 +251,26 @@ def calculate_yearly_plot_data(yearly_costs_dict):
     }
 
 
+def calculate_sensitivity_yearly_plot_data(data):
+    """World annual climate financing (billion dollars) per sensitivity variant.
+
+    Mirrors calculate_yearly_world_cost() in the left subplot of
+    make_yearly_climate_financing_plot_SENSITIVITY_ANALYSIS(). Takes the whole
+    sensitivity JSON rather than one scenario out of it, since the point of the
+    panel is to compare scenarios.
+
+    Returns {variant_label: [value_per_year]}.
+    """
+    out = {}
+    for label, key, _ in SENSITIVITY_VARIANTS:
+        if key not in data:
+            raise KeyError(f"{key!r} not in the sensitivity data")
+        # Multiplication by 1e3 converts trillion to billion dollars, so the
+        # panel shares its unit with the time-series row above.
+        out[label] = [v * 1e3 for v in get_yearly_cost(data[key])]
+    return out
+
+
 def calculate_scatter_data(yearly_costs_dict, discount_rate_text):
     """Mirrors plot_scatter() in analysis_main.py with divide_by_marketcap.
 
@@ -262,6 +318,11 @@ WARMS = ["#FBE3A6", "#F7B54A", "#EF7C2B", "#D6331F"]
 # so the shades are picked to stay distinguishable at line width.
 BLUE_LINES = ["#1a1a1a", "#1F5F96", "#5A9BCB", "#8FC0DE"]
 WARM_LINES = ["#D6331F", "#EF7C2B", "#F0B429", "#9C6B1E", "#B5495B", "#7A4B8C"]
+
+# Sensitivity row: the default assumption in the black of "World" above, the
+# deviations in one colour each, and told apart from the rows above by the
+# dotted linestyle rather than by hue.
+SENSITIVITY_LINES = ["#1a1a1a", "#1F5F96", "#D6331F", "#EF7C2B"]
 
 BY_DEVELOPMENT = [
     "World",
@@ -375,12 +436,22 @@ def draw_panel(ax, plot_data, groups, colors, title, panel_letter, xmax):
     )
 
 
-def draw_timeseries_panel(ax, yearly_plot_data, groups, colors, panel_letter, ymax):
-    for group, color in zip(groups, colors):
+def draw_timeseries_panel(
+    ax,
+    yearly_plot_data,
+    groups,
+    colors,
+    panel_letter,
+    ymax,
+    linestyles=None,
+    ylabel="Annual climate financing (billion dollars)",
+):
+    for i, (group, color) in enumerate(zip(groups, colors)):
         ax.plot(
             WHOLE_YEARS,
             yearly_plot_data[group],
             color=color,
+            linestyle="-" if linestyles is None else linestyles[i],
             linewidth=1.6,
             label=group,
             zorder=3,
@@ -389,11 +460,7 @@ def draw_timeseries_panel(ax, yearly_plot_data, groups, colors, panel_letter, ym
     ax.set_xlim(WHOLE_YEARS[0], WHOLE_YEARS[-1])
     ax.set_ylim(0, ymax)
     ax.set_xlabel("Time", fontsize=9, color=TEXT)
-    ax.set_ylabel(
-        "Annual climate financing (billion dollars)",
-        fontsize=9,
-        color=TEXT,
-    )
+    ax.set_ylabel(ylabel, fontsize=9, color=TEXT)
     ax.tick_params(axis="both", labelsize=9, colors=TEXT, length=3)
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)
@@ -512,14 +579,24 @@ def main():
     yearly_plot_data = calculate_yearly_plot_data(yearly_costs_dict)
     scatter_data = calculate_scatter_data(yearly_costs_dict, DEFAULT_DISCOUNT_RATE)
     report_scatter_coverage(yearly_costs_dict, scatter_data)
+    sensitivity_plot_data = calculate_sensitivity_yearly_plot_data(data)
 
     totals = [sum(plot_data[g].values()) for g in BY_DEVELOPMENT + BY_REGION]
     xmax = max(totals) * 1.15  # shared scale, so the two panels stay comparable
     peaks = [max(yearly_plot_data[g]) for g in BY_DEVELOPMENT + BY_REGION]
     ymax = max(peaks) * 1.15
+    # The sensitivity row gets its own scale: the no-learning variants run well
+    # above the World line of row two.
+    sensitivity_ymax = max(max(v) for v in sensitivity_plot_data.values()) * 1.15
 
-    fig, axes = plt.subplots(3, 2, figsize=(12, 12.6), constrained_layout=True)
-    (ax_a, ax_b), (ax_c, ax_d), (ax_e, ax_f) = axes
+    # The last row is one panel spanning both columns, so it needs a gridspec
+    # rather than a plain subplots() grid.
+    fig = plt.figure(figsize=(12, 16.8), constrained_layout=True)
+    gs = fig.add_gridspec(4, 2)
+    ax_a, ax_b = fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[0, 1])
+    ax_c, ax_d = fig.add_subplot(gs[1, 0]), fig.add_subplot(gs[1, 1])
+    ax_e, ax_f = fig.add_subplot(gs[2, 0]), fig.add_subplot(gs[2, 1])
+    ax_g = fig.add_subplot(gs[3, :])
     draw_panel(ax_a, plot_data, BY_DEVELOPMENT, BLUES,
                "By level of development", "a", xmax)
     draw_panel(ax_b, plot_data, BY_REGION, WARMS, "By region", "b", xmax)
@@ -531,6 +608,16 @@ def main():
                        SCATTER_BY_DEVELOPMENT, SCATTER_BLUE_MARKERS, "e")
     draw_scatter_panel(ax_f, scatter_data, BY_REGION_MAP, BY_REGION,
                        WARM_LINES, "f")
+    draw_timeseries_panel(
+        ax_g,
+        sensitivity_plot_data,
+        [label for label, _, _ in SENSITIVITY_VARIANTS],
+        SENSITIVITY_LINES,
+        "g",
+        sensitivity_ymax,
+        linestyles=[linestyle for _, _, linestyle in SENSITIVITY_VARIANTS],
+        ylabel="Global annual climate financing\n(billion dollars)",
+    )
     # The two scatters show the same points, so keep them on one scale.
     for ax in (ax_e, ax_f):
         ax.set_xlim(ax_e.get_xlim())
